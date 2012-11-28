@@ -1,14 +1,16 @@
 <!DOCTYPE html>  <html> <head>   <title>jira-cli.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               jira-cli.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <h1>Jira Command Line Client</h1>
 
 <p>This client depends on you having a json file in your home directory
-named '.jiraclirc.json' it must contain:
-    { 
-        "user": "USERNAME",
-        "password":"PASSWORD",
-        "host":"www.jira.com",
-        "port":80,
-        "project": 10100
-    }</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">fs = </span><span class="nx">require</span> <span class="s">&#39;fs&#39;</span>
+named '.jiraclirc.json' it must contain:</p>
+
+<pre><code>{ 
+    "user": "USERNAME",
+    "password":"PASSWORD",
+    "host":"www.jira.com",
+    "port":80,
+    "project": 10100
+}
+</code></pre>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">fs = </span><span class="nx">require</span> <span class="s">&#39;fs&#39;</span>
 <span class="nv">path = </span><span class="nx">require</span> <span class="s">&#39;path&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Because colors are pretty</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">color = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;ansi-color&#39;</span><span class="p">).</span><span class="nx">set</span>
 <span class="nv">util = </span><span class="nx">require</span> <span class="s">&#39;util&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>We're using node-jira, but [my version])(https://github.com/tebriel/node-jira)</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">JiraApi = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;jira&#39;</span><span class="p">).</span><span class="nx">JiraApi</span>
 
