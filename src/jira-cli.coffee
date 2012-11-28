@@ -161,7 +161,7 @@ if require.main is module
             alias:'help'
             describe:'Shows this help message'
             default:false
-        }).usage('Usage: $0 -f "EG-143"\n $0 -r "EG-143"')
+        }).usage('Usage: jira -f EG-143 -- jira -r EG-143')
         .boolean('h')
         .boolean('l')
         .string('f')
