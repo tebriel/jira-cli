@@ -30,11 +30,15 @@
   "scripts": {
     "test": "grunt test"
   },
+  "dependencies": {
+    "jira": "git+https://github.com/tebriel/node-jira.git",
+    "optimist": "~0.3.5",
+    "ansi-color": "~0.2.1"
+  },
   "devDependencies": {
     "grunt": "~0.3.17",
     "grunt-contrib-coffee": "~0.3.2",
     "grunt-jasmine-node": "0.0.4",
-    "jira": "git+https://github.com/tebriel/node-jira.git",
     "docco": "~0.4.0"
   },
   "keywords": ["jira", "awesomeness", "win", "whisky"]
