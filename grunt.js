@@ -1,5 +1,11 @@
 module.exports = function(grunt) {
 
+  // Default task.
+  grunt.loadNpmTasks('grunt-contrib-coffee');
+  grunt.loadNpmTasks('grunt-jasmine-node');
+  grunt.registerTask('default', 'coffee jasmine_node');
+  grunt.registerTask('test', 'coffee jasmine_node');
+  
   // Project configuration.
   grunt.initConfig({
     pkg: '<json:package.json>',
@@ -48,10 +54,5 @@ module.exports = function(grunt) {
     }
   });
 
-  // Default task.
-  grunt.registerTask('default', 'coffee jasmine_node');
-  grunt.registerTask('test', 'jasmine_node');
-  grunt.loadNpmTasks('grunt-contrib-coffee');
-  grunt.loadNpmTasks('grunt-jasmine-node');
 
 };
