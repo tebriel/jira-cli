@@ -21,7 +21,9 @@ Pull down transition states and Issue types for dynamic creation/transitioning
 [GitHub Documentation](http://tebriel.github.com/jira-cli/)
 
 ## Examples
+
 `jira -l`
+
 `jira -f AB-123`
 
 ## Contributing
