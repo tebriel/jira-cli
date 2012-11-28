@@ -3,14 +3,22 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: '<json:package.json>',
-    test: {
-      files: ['test/**/*.js']
+    jasmine_node: {
+        projectRoot: "./spec",
+        forceExit: false,
+        extensions: 'coffee',
+        jUnit: {
+            report: false,
+            savePath : "./build/reports/jasmine/",
+            useDotNotation: true,
+            consolidate: true
+        }
     },
     lint: {
       files: ['grunt.js', 'lib/**/*.js', 'test/**/*.js']
     },
     watch: {
-      files: '<config:lint.files>',
+      files: ['src/**/*.coffee','spec/**/*.coffee'],
       tasks: 'default'
     },
     jshint: {
@@ -30,10 +38,20 @@ module.exports = function(grunt) {
       globals: {
         exports: true
       }
+    },
+    coffee: {
+        compile: {
+            files: {
+                'lib/*.js': ['src/*.coffee']
+            }
+        }
     }
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint test');
+  grunt.registerTask('default', 'coffee jasmine_node');
+  grunt.registerTask('test', 'jasmine_node');
+  grunt.loadNpmTasks('grunt-contrib-coffee');
+  grunt.loadNpmTasks('grunt-jasmine-node');
 
 };
