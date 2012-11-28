@@ -45,7 +45,7 @@ class JiraCli
     prettyPrintIssue: (issue)->
         sumColor = "green"
         sumColor = "red" if +issue.fields.status.id in [5,6]
-        process.stdout.write color(issue.id, sumColor)
+        process.stdout.write color(issue.key, sumColor)
         process.stdout.write " - "
         process.stdout.write issue.fields.summary
         process.stdout.write "\n"
