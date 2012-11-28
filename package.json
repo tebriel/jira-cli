@@ -2,7 +2,7 @@
   "name": "jira-cli",
   "description": "The best project ever.",
   "version": "0.1.0",
-  "homepage": "https://github.com/tebriel/jira-cli",
+  "homepage": "https://tebriel.github.com/jira-cli",
   "author": {
     "name": "Chris Moultrie",
     "email": "tebriel@gmail.com"
@@ -31,8 +31,8 @@
     "grunt": "~0.3.17",
     "grunt-contrib-coffee": "~0.3.2",
     "grunt-jasmine-node": "0.0.4",
-    "jira": "0.0.2",
+    "jira": "git+https://github.com/tebriel/node-jira.git",
     "docco": "~0.4.0"
   },
-  "keywords": []
+  "keywords": ["jira", "awesomeness", "win", "whisky"]
 }
