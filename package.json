@@ -31,7 +31,8 @@
     "grunt": "~0.3.17",
     "grunt-contrib-coffee": "~0.3.2",
     "grunt-jasmine-node": "0.0.4",
-    "jira": "0.0.2"
+    "jira": "0.0.2",
+    "docco": "~0.4.0"
   },
   "keywords": []
 }
