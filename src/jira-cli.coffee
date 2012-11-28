@@ -2,6 +2,7 @@
 #
 # This client depends on you having a json file in your home directory
 # named '.jiraclirc.json' it must contain:
+#
 #     { 
 #         "user": "USERNAME",
 #         "password":"PASSWORD",
