@@ -37,6 +37,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+_0.1.2 Moar Minor Doc Changes_
 _0.1.1 Minor Doc Changes_
 _0.1.0 Initial Release_
 
