@@ -7,6 +7,9 @@
     "name": "Chris Moultrie",
     "email": "tebriel@gmail.com"
   },
+  "bin": {
+    "jira": "./lib/jira-cli.js"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/tebriel/jira-cli.git"

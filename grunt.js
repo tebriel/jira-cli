@@ -3,7 +3,7 @@ module.exports = function(grunt) {
   // Default task.
   grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-jasmine-node');
-  grunt.registerTask('default', 'coffee jasmine_node');
+  grunt.registerTask('default', 'coffee jasmine_node concat');
   grunt.registerTask('test', 'coffee jasmine_node');
   
   // Project configuration.
@@ -19,6 +19,15 @@ module.exports = function(grunt) {
             useDotNotation: true,
             consolidate: true
         }
+    },
+    meta: {
+        banner: '#!/usr/bin/env node'
+    },
+    concat: {
+        dist: {
+            src: ['<banner>', '<file_strip_banner:lib/jira-cli.js>'],
+            dest: 'lib/jira-cli.js'
+        } 
     },
     lint: {
       files: ['grunt.js', 'lib/**/*.js', 'test/**/*.js']
