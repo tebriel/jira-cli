@@ -10,6 +10,8 @@
 #         "port":80,
 #         "project": 10100
 #     }
+#
+# JiraCli is on [github](https://github.com/tebriel/jira-cli)
 
 
 fs = require 'fs'
@@ -17,7 +19,7 @@ path = require 'path'
 # Because colors are pretty
 color = require('ansi-color').set
 util = require 'util'
-# We're using node-jira, but [my version])(https://github.com/tebriel/node-jira)
+# We're using node-jira, but [my version](https://github.com/tebriel/node-jira)
 JiraApi = require('jira').JiraApi
 
 
@@ -121,6 +123,7 @@ module.exports = {
 }
 
 # This is great, stole it from [St. On It](http://st-on-it.blogspot.com/2011/05/how-to-read-user-input-with-nodejs.html)
+#
 # Re-formatted it to be in coffeescript
 ask = (question, format, callback) ->
     stdin = process.stdin

@@ -10,9 +10,11 @@ named '.jiraclirc.json' it must contain:</p>
     "port":80,
     "project": 10100
 }
-</code></pre>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">fs = </span><span class="nx">require</span> <span class="s">&#39;fs&#39;</span>
+</code></pre>
+
+<p>JiraCli is on <a href="https://github.com/tebriel/jira-cli">github</a></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">fs = </span><span class="nx">require</span> <span class="s">&#39;fs&#39;</span>
 <span class="nv">path = </span><span class="nx">require</span> <span class="s">&#39;path&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Because colors are pretty</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">color = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;ansi-color&#39;</span><span class="p">).</span><span class="nx">set</span>
-<span class="nv">util = </span><span class="nx">require</span> <span class="s">&#39;util&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>We're using node-jira, but [my version])(https://github.com/tebriel/node-jira)</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">JiraApi = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;jira&#39;</span><span class="p">).</span><span class="nx">JiraApi</span>
+<span class="nv">util = </span><span class="nx">require</span> <span class="s">&#39;util&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>We're using node-jira, but <a href="https://github.com/tebriel/node-jira">my version</a></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">JiraApi = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;jira&#39;</span><span class="p">).</span><span class="nx">JiraApi</span>
 
 
 <span class="k">class</span> <span class="nx">JiraCli</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Builds a new JiraCli with the config file</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">constructor: </span><span class="nf">(@config)-&gt;</span>
@@ -84,8 +86,9 @@ closed issues</p>             </td>             <td class="code">               
 
 <span class="nv">module.exports = </span><span class="p">{</span>
     <span class="nx">JiraCli</span>
-<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p>This is great, stole it from <a href="http://st-on-it.blogspot.com/2011/05/how-to-read-user-input-with-nodejs.html">St. On It</a>
-Re-formatted it to be in coffeescript</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">ask = </span><span class="nf">(question, format, callback) -&gt;</span>
+<span class="p">}</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p>This is great, stole it from <a href="http://st-on-it.blogspot.com/2011/05/how-to-read-user-input-with-nodejs.html">St. On It</a></p>
+
+<p>Re-formatted it to be in coffeescript</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">ask = </span><span class="nf">(question, format, callback) -&gt;</span>
     <span class="nv">stdin = </span><span class="nx">process</span><span class="p">.</span><span class="nx">stdin</span>
     <span class="nv">stdout = </span><span class="nx">process</span><span class="p">.</span><span class="nx">stdout</span>
  
