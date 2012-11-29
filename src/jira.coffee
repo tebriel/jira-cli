@@ -21,6 +21,9 @@ JiraHelper = require('./jira-cli').JiraHelper
 # ## [dutils docs/source](data-utils.html)
 dutils = require('./data-utils')
 
+# ## Create Config File ##
+# 
+# Creates a config file when one doesn't exist
 createConfigFile = (aConfigFile) ->
     console.log "No config file found, answer these questions to create one!"
     dutils.ask "Username", /.+/, (username) ->
@@ -51,7 +54,6 @@ paramIsText = (param)->
 
 # ## Load the Config File ##
 #
-# TODO: Create if it doesn't exist
 loadConfigFile = (configFilePath) ->
     configFile = fs.readFileSync configFilePath
 
