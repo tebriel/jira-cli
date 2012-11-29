@@ -1,10 +1,11 @@
 # Because colors are pretty
 color = require('ansi-color').set
+# [PrettyPrinter Sourc/Doc](pretty-printer.html)
 PrettyPrinter = require('./pretty-printer').PrettyPrinter
 # We're using node-jira-devel, [my version](https://github.com/tebriel/node-jira)
 JiraApi = require('node-jira-devel').JiraApi
 
-# ## JiraHelper ## 
+# ## JiraHelper ##
 #
 # This does the fancy talking to JiraApi for us. It formats the objects the way
 # that Jira expects them to come in. Basically a wrapper for node-jira-devel
