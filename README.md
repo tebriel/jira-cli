@@ -14,13 +14,12 @@ Install the module with: `npm install jira-cli`
 *  List all a user's projects
 *  Finds an issue by Key (AB-123) or Id (123456)
 *  Opens an issue in your project (from .jiraclirc.json)
-*  Resolves an issue (sets transition to '5')
+*  Transitions an issue (shows all available transition states)
 
 ## TODO
 
 *  Allow searching to be limited by project id
 *  Allow user to add a new ticket to different projects
-*  Pull down transition states for transitioning
 
 ## Documentation
 

@@ -127,8 +127,6 @@ class JiraCli
     # Resolves an issue in Jira, defaults to "Resolved", though maybe someday I
     # should change it to "closed" or at least give an option
     transitionIssue: (issueNum, transitionNum)->
-        # resolved == 5
-        # closed == 6
         issueUpdate =
             transition:
                 id:transitionNum
