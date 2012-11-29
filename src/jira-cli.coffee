@@ -108,21 +108,37 @@ class JiraCli
                 @error = error if error?
                 console.log color("Error deleting issue: #{error}", "red")
 
+    prettyPrintTransition: (transition) ->
+        process.stdout.write color(transition.id, "white+bold")
+        process.stdout.write " - "
+        process.stdout.write transition.name
+        process.stdout.write "\n"
+
+    # ## Get Transitions List for an Issue ##
+    listTransitions: (issueNum, callback) ->
+        @jira.listTransitions issueNum, (error, transitions)=>
+            if transitions?
+                callback transitions
+            else
+                console.log color("Error getting transitions: #{error}", "red")
+                process.exit()
+
+
     # Resolves an issue in Jira, defaults to "Resolved", though maybe someday I
     # should change it to "closed" or at least give an option
-    resolveIssue: (issueNum)->
-        # resolved == 5
-        # closed == 6
+    transitionIssue: (issueNum, transitionNum)->
         issueUpdate =
             transition:
-                id:5
+                id:transitionNum
         @jira.transitionIssue issueNum, issueUpdate, (error, response) =>
             if response?
                 @response = response
-                console.log "Issue #{issueNum} was #{color("resolved", "green")}"
+                console.log "Issue #{issueNum} was #{color("transitioned", "green")}"
             else
                 @error = error if error?
-                console.log color("Error resolving issue: #{error}", "red")
+                console.log color("Error transitioning issue: #{error}", "red")
+
+            process.exit()
 
     # Gets a list of issues for the user listed in the config file, pretty
     # prints them and only shows open ones by default from the cli, probably
@@ -183,6 +199,12 @@ ask = (question, format, callback) ->
         else
             stdout.write("It should match: "+ format +"\n")
             ask(question, format, callback)
+issueSorter = (a, b)->
+    first = parseInt a.id
+    second = parseInt b.id
+    return -1 if first < second
+    return 0 if first is second
+    return 1 if first > second
 
 if require.main is module
     # Parse some options!!
@@ -193,8 +215,8 @@ if require.main is module
         }).options('a', {
             alias:'add'
             describe:'Allows you to add a new Jira Task'
-        }).options('r', {
-            alias:'resolve'
+        }).options('t', {
+            alias:'transition'
             describe:'Allows you to resolve a specific Jira ID'
         }).options('l', {
             alias:'list'
@@ -211,7 +233,7 @@ if require.main is module
         .boolean('h')
         .boolean('l')
         .string('f')
-        .string('r')
+        .string('t')
 
     if argv.argv.help
         argv.showHelp()
@@ -234,9 +256,15 @@ if require.main is module
     else if args.f?
         jiraCli.getIssue args.f
         return
-    else if args.r?
-        jiraCli.resolveIssue args.r
-        return
+    else if args.t?
+        jiraCli.listTransitions args.t, (transitions) ->
+            transitions.sort issueSorter
+            for transition in transitions
+                jiraCli.prettyPrintTransition transition
+            allowedTypes = (transition.id for transition in transitions)
+            allowedTypes = new RegExp "[#{allowedTypes.join '|'}]"
+            ask "Transtion Type ", allowedTypes, (type)->
+                jiraCli.transitionIssue args.t, type
     else if args.p?
         projects = jiraCli.getMyProjects (projects)=>
             for project in projects
@@ -249,12 +277,7 @@ if require.main is module
         ask "Summary", /.+/, (summary)->
             ask "Description", /.+/, (description)->
                 jiraCli.getIssueTypes (issueTypes)->
-                    issueTypes.sort (a, b)->
-                        first = parseInt a.id
-                        second = parseInt b.id
-                        return -1 if first < second
-                        return 0 if first is second
-                        return 1 if first > second
+                    issueTypes.sort issueSorter
                     for type in issueTypes
                         jiraCli.prettyPrintIssueTypes type
                         
