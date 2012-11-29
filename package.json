@@ -1,7 +1,7 @@
 {
   "name": "jira-cli",
   "description": "The best project ever.",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "homepage": "https://tebriel.github.com/jira-cli",
   "author": {
     "name": "Chris Moultrie",
@@ -31,7 +31,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "node-jira-devel": ">= 0.1.6",
+    "node-jira-devel": ">= 0.1.7",
     "optimist": "~0.3.5",
     "ansi-color": "~0.2.1"
   },
