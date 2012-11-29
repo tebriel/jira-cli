@@ -1,7 +1,7 @@
 {
   "name": "jira-cli",
-  "description": "The best project ever.",
-  "version": "0.1.8",
+  "description": "Command line interface for Jira",
+  "version": "0.1.9",
   "homepage": "https://tebriel.github.com/jira-cli",
   "author": {
     "name": "Chris Moultrie",
