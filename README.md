@@ -39,6 +39,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+*  _0.1.5 Listing Id for project_
 *  _0.1.4 Listing Types in Create_
 *  _0.1.3 Listing Projects_
 *  _0.1.2 Moar Minor Doc Changes_
