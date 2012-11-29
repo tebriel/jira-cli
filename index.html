@@ -1,136 +1,171 @@
-<!DOCTYPE html>  <html> <head>   <title>jira-cli.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="data-utils.html">                 data-utils.coffee               </a>                                           <a class="source" href="jira-cli.html">                 jira-cli.coffee               </a>                                           <a class="source" href="jira.html">                 jira.coffee               </a>                                           <a class="source" href="pretty-printer.html">                 pretty-printer.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               jira-cli.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p>Because colors are pretty</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">color = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;ansi-color&#39;</span><span class="p">).</span><span class="nx">set</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p><a href="pretty-printer.html">PrettyPrinter Sourc/Doc</a></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">PrettyPrinter = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;./pretty-printer&#39;</span><span class="p">).</span><span class="nx">PrettyPrinter</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>We're using node-jira-devel, <a href="https://github.com/tebriel/node-jira">my version</a></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">JiraApi = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;node-jira-devel&#39;</span><span class="p">).</span><span class="nx">JiraApi</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h2>JiraHelper</h2>
+<!DOCTYPE html>  <html> <head>   <title>jira.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="data-utils.html">                 data-utils.coffee               </a>                                           <a class="source" href="jira-cli.html">                 jira-cli.coffee               </a>                                           <a class="source" href="jira.html">                 jira.coffee               </a>                                           <a class="source" href="pretty-printer.html">                 pretty-printer.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               jira.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <h1>Jira Command Line Client</h1>
 
-<p>This does the fancy talking to JiraApi for us. It formats the objects the way
-that Jira expects them to come in. Basically a wrapper for node-jira-devel</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">JiraHelper</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h2>Constructor</h2>
+<p>This client depends on you having a json file in your home directory
+named '.jiraclirc.json' it must contain:</p>
 
-<p>Builds a new JiraCli with the config settings</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">constructor: </span><span class="nf">(@config)-&gt;</span>
-        <span class="vi">@jira = </span><span class="k">new</span> <span class="nx">JiraApi</span><span class="p">(</span><span class="s">&#39;http&#39;</span><span class="p">,</span> <span class="nx">@config</span><span class="p">.</span><span class="nx">host</span><span class="p">,</span> <span class="nx">@config</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span> <span class="nx">@config</span><span class="p">.</span><span class="nx">user</span><span class="p">,</span> <span class="nx">@config</span><span class="p">.</span><span class="nx">password</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">)</span>
-        <span class="vi">@response = </span><span class="kc">null</span>
-        <span class="vi">@error = </span><span class="kc">null</span>
-        <span class="vi">@pp = </span><span class="k">new</span> <span class="nx">PrettyPrinter</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h2>Get Issue</h2>
+<pre><code>{ 
+    "user": "USERNAME",
+    "password":"PASSWORD",
+    "host":"www.jira.com",
+    "port":80,
+    "project": 10100
+}
+</code></pre>
 
-<p>Searches Jira for the issue number requested
-this can be either a key AB-123 or just the number 123456</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">getIssue: </span><span class="nf">(issueNum)-&gt;</span>
-        <span class="nx">@jira</span><span class="p">.</span><span class="nx">findIssue</span> <span class="nx">issueNum</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span>
-            <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
-                <span class="vi">@response = </span><span class="nx">response</span>
-                <span class="nx">@pp</span><span class="p">.</span><span class="nx">prettyPrintIssue</span> <span class="nx">response</span>
-            <span class="k">else</span>
-                <span class="vi">@error = </span><span class="nx">error</span> <span class="k">if</span> <span class="nx">error</span><span class="o">?</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="s">&quot;Error finding issue: </span><span class="si">#{</span><span class="nx">error</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <h2>Get Issue Types</h2>
+<p>If not present, it will enter an interactive mode to create it with you</p>
 
-<p>Gets a list of all the available issue types</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">getIssueTypes: </span><span class="nf">(callback)-&gt;</span>
-        <span class="nx">@jira</span><span class="p">.</span><span class="nx">listIssueTypes</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span>
-            <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
-                <span class="nx">callback</span> <span class="nx">response</span>
-            <span class="k">else</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="s">&quot;Error listing issueTypes: </span><span class="si">#{</span><span class="nx">error</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span>
-                <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <h2>Add Issue</h2>
+<p>JiraCli is on <a href="https://github.com/tebriel/jira-cli">github</a></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">fs = </span><span class="nx">require</span> <span class="s">&#39;fs&#39;</span>
+<span class="nv">path = </span><span class="nx">require</span> <span class="s">&#39;path&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h2><a href="jira-cli.html">JiraHelper docs/source</a></h2>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">JiraHelper = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;./jira-cli&#39;</span><span class="p">).</span><span class="nx">JiraHelper</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h2><a href="data-utils.html">dutils docs/source</a></h2>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">dutils = </span><span class="nx">require</span><span class="p">(</span><span class="s">&#39;./data-utils&#39;</span><span class="p">)</span>
 
-<h3>Takes</h3>
+<span class="nv">createConfigFile = </span><span class="nf">(aConfigFile) -&gt;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;No config file found, answer these questions to create one!&quot;</span>
+    <span class="nx">dutils</span><span class="p">.</span><span class="nx">ask</span> <span class="s">&quot;Username&quot;</span><span class="p">,</span> <span class="sr">/.+/</span><span class="p">,</span> <span class="nf">(username) -&gt;</span>
+        <span class="nx">dutils</span><span class="p">.</span><span class="nx">ask</span> <span class="s">&quot;Password&quot;</span><span class="p">,</span> <span class="sr">/.+/</span><span class="p">,</span> <span class="nf">(password) -&gt;</span>
+            <span class="nx">dutils</span><span class="p">.</span><span class="nx">ask</span> <span class="s">&quot;Jira Host&quot;</span><span class="p">,</span> <span class="sr">/.+/</span><span class="p">,</span> <span class="nf">(host) -&gt;</span>
+                <span class="nx">dutils</span><span class="p">.</span><span class="nx">ask</span> <span class="s">&quot;Jira Port&quot;</span><span class="p">,</span> <span class="sr">/.+/</span><span class="p">,</span> <span class="nf">(port) -&gt;</span>
+                    <span class="nx">dutils</span><span class="p">.</span><span class="nx">ask</span> <span class="s">&quot;Default Project&quot;</span><span class="p">,</span> <span class="sr">/.*/</span><span class="p">,</span> <span class="nf">(project) -&gt;</span>
+                        <span class="nv">config =</span>
+                            <span class="nx">user</span><span class="o">:</span><span class="nx">username</span>
+                            <span class="nx">password</span><span class="o">:</span><span class="nx">password</span>
+                            <span class="nx">host</span><span class="o">:</span><span class="nx">host</span>
+                            <span class="nx">port</span><span class="o">:</span><span class="nx">port</span>
+                            <span class="nx">project</span><span class="o">:</span><span class="nx">project</span>
 
-<ul>
-<li>summary: details for the title of the issue</li>
-<li>description: more detailed than summary</li>
-<li>issue type: Id of the type (types are like bug, feature)</li>
-<li>project: this is the id of the project that you're assigning the issue # to</li>
-</ul>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">addIssue: </span><span class="nf">(summary, description, issueType, project) -&gt;</span>
-        <span class="nv">newIssue =</span>
-            <span class="nv">fields:</span>
-                <span class="nv">project: </span><span class="p">{</span> <span class="nx">id</span><span class="o">:</span><span class="nx">project</span> <span class="p">}</span>
-                <span class="nv">summary: </span><span class="nx">summary</span>
-                <span class="nv">issuetype: </span><span class="p">{</span> <span class="nx">id</span><span class="o">:</span><span class="nx">issueType</span> <span class="p">}</span>
-                <span class="nv">assignee: </span><span class="p">{</span> <span class="nx">name</span><span class="o">:</span><span class="nx">@config</span><span class="p">.</span><span class="nx">user</span> <span class="p">}</span>
-                <span class="nv">description: </span><span class="nx">description</span>
+                        <span class="nx">fs</span><span class="p">.</span><span class="nx">writeFileSync</span> <span class="nx">aConfigFile</span><span class="p">,</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">config</span><span class="p">),</span> <span class="s">&#39;utf8&#39;</span>
+                        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;File created and saved as </span><span class="si">#{</span><span class="nx">aConfigFile</span><span class="si">}</span><span class="s">&quot;</span>
+                        <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h2>Check for Text Parameter</h2>
 
-        <span class="nx">@jira</span><span class="p">.</span><span class="nx">addNewIssue</span> <span class="nx">newIssue</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span>
-            <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
-                <span class="vi">@response = </span><span class="nx">response</span> <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Issue </span><span class="si">#{</span><span class="nx">response</span><span class="p">.</span><span class="nx">key</span><span class="si">}</span><span class="s"> has been </span><span class="si">#{</span><span class="nx">color</span><span class="p">(</span><span class="s">&quot;created&quot;</span><span class="p">,</span> <span class="s">&quot;green&quot;</span><span class="p">)</span><span class="si">}</span><span class="s">&quot;</span>
-            <span class="k">else</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>The error object is non-standard here from Jira, I'll parse
-it better later</p>             </td>             <td class="code">               <div class="highlight"><pre>                <span class="vi">@error = </span><span class="nx">error</span> <span class="k">if</span> <span class="nx">error</span><span class="o">?</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="s">&quot;Error creating issue: </span><span class="si">#{</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span>
+<p>Optimist returns a <code>bool</code> if the param is given but with nothing following it</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">paramIsText = </span><span class="nf">(param)-&gt;</span>
+    <span class="k">if</span> <span class="k">typeof</span><span class="p">(</span><span class="nx">param</span><span class="p">)</span> <span class="o">is</span> <span class="s">&quot;boolean&quot;</span>
+        <span class="nx">argv</span><span class="p">.</span><span class="nx">showHelp</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">false</span>
+    <span class="kc">true</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h2>Load the Config File</h2>
 
-            <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <h2>Delete an Issue</h2>
+<p>TODO: Create if it doesn't exist</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">loadConfigFile = </span><span class="nf">(configFilePath) -&gt;</span>
+    <span class="nv">configFile = </span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span> <span class="nx">configFilePath</span>
 
-<p>Deletes an issue (if you have permissions) from Jira. I haven't tested
-this successfully because I don't have permissions.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">deleteIssue: </span><span class="nf">(issueNum)-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>Don't have permissions currently</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">@jira</span><span class="p">.</span><span class="nx">deleteIssue</span> <span class="nx">issueNum</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span>
-            <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
-                <span class="vi">@response = </span><span class="nx">response</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Issue </span><span class="si">#{</span><span class="nx">issueNum</span><span class="si">}</span><span class="s"> was </span><span class="si">#{</span><span class="nx">color</span><span class="p">(</span><span class="s">&quot;deleted&quot;</span><span class="p">,</span> <span class="s">&quot;green&quot;</span><span class="p">)</span><span class="si">}</span><span class="s">&quot;</span>
-            <span class="k">else</span>
-                <span class="vi">@error = </span><span class="nx">error</span> <span class="k">if</span> <span class="nx">error</span><span class="o">?</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="s">&quot;Error deleting issue: </span><span class="si">#{</span><span class="nx">error</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <h2>Add Worklog Item</h2>
+    <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span> <span class="nx">configFile</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h2>Transition Item</h2>
 
-<p>Adds a simple worklog to an issue</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">addWorklog: </span><span class="nf">(issueId, comment, timeSpent, exit)-&gt;</span>
-        <span class="nv">worklog =</span>
-            <span class="nx">comment</span><span class="o">:</span><span class="nx">comment</span>
-            <span class="nx">timeSpent</span><span class="o">:</span><span class="nx">timeSpent</span>
-        <span class="nx">@jira</span><span class="p">.</span><span class="nx">addWorklog</span> <span class="nx">issueId</span><span class="p">,</span> <span class="nx">worklog</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span><span class="o">=&gt;</span>
-            <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Worklog was </span><span class="si">#{</span><span class="nx">color</span><span class="p">(</span><span class="s">&quot;added&quot;</span><span class="p">,</span> <span class="s">&quot;green&quot;</span><span class="p">)</span><span class="si">}</span><span class="s">&quot;</span>
-            <span class="k">else</span>
-                <span class="vi">@error = </span><span class="nx">error</span> <span class="k">if</span> <span class="nx">error</span><span class="o">?</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="s">&quot;Error adding worklog: </span><span class="si">#{</span><span class="nx">error</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span>
-            <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span> <span class="k">if</span> <span class="nx">exit</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <h2>List Transitions</h2>
+<p>This takes the issueId, lists the transitions available for the item and then
+lets the user apply that transition to the item. Optionally the user can
+specify a comment which will then prompt for time spent. This adds a work log
+item to the item before the transition.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">transitionItem = </span><span class="nf">(issueId) -&gt;</span>
+    <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">listTransitions</span> <span class="nx">issueId</span><span class="p">,</span> <span class="nf">(transitions) -&gt;</span>
+        <span class="nx">transitions</span><span class="p">.</span><span class="nx">sort</span> <span class="nx">dutils</span><span class="p">.</span><span class="nx">itemSorter</span>
+        <span class="k">for</span> <span class="nx">transition</span> <span class="k">in</span> <span class="nx">transitions</span>
+            <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">pp</span><span class="p">.</span><span class="nx">prettyPrintTransition</span> <span class="nx">transition</span>
+        <span class="nv">allowedTypes = </span><span class="p">(</span><span class="nx">transition</span><span class="p">.</span><span class="nx">id</span> <span class="k">for</span> <span class="nx">transition</span> <span class="k">in</span> <span class="nx">transitions</span><span class="p">)</span>
+        <span class="nv">allowedTypes = </span><span class="k">new</span> <span class="nb">RegExp</span> <span class="s">&quot;[</span><span class="si">#{</span><span class="nx">allowedTypes</span><span class="p">.</span><span class="nx">join</span> <span class="s">&#39;|&#39;</span><span class="si">}</span><span class="s">]&quot;</span>
+        <span class="nx">dutils</span><span class="p">.</span><span class="nx">ask</span> <span class="s">&quot;Transtion Type &quot;</span><span class="p">,</span> <span class="nx">allowedTypes</span><span class="p">,</span> <span class="nf">(type)-&gt;</span>
+            <span class="nx">dutils</span><span class="p">.</span><span class="nx">ask</span> <span class="s">&quot;Comment for worklog (blank to skip)&quot;</span><span class="p">,</span> <span class="sr">/.*/</span><span class="p">,</span> <span class="nf">(comment)-&gt;</span>
+                <span class="k">if</span> <span class="nx">comment</span><span class="p">.</span><span class="nx">length</span> <span class="o">is</span> <span class="mi">0</span>
+                    <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">transitionIssue</span> <span class="nx">issueId</span><span class="p">,</span> <span class="nx">type</span>
+                    <span class="k">return</span>
+                <span class="nx">dutils</span><span class="p">.</span><span class="nx">ask</span> <span class="s">&quot;Time Spent (for worklog)&quot;</span><span class="p">,</span> <span class="sr">/.+/</span><span class="p">,</span> <span class="nf">(timeSpent)-&gt;</span>
+                    <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">addWorklog</span> <span class="nx">issueId</span><span class="p">,</span> <span class="nx">comment</span><span class="p">,</span> <span class="nx">timeSpent</span><span class="p">,</span> <span class="kc">false</span>
+                    <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">transitionIssue</span> <span class="nx">issueId</span><span class="p">,</span> <span class="nx">type</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <h2>Add Work Log</h2>
 
-<p>List the transitions available for an issue</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">listTransitions: </span><span class="nf">(issueNum, callback) -&gt;</span>
-        <span class="nx">@jira</span><span class="p">.</span><span class="nx">listTransitions</span> <span class="nx">issueNum</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">transitions</span><span class="p">)</span><span class="o">=&gt;</span>
-            <span class="k">if</span> <span class="nx">transitions</span><span class="o">?</span>
-                <span class="nx">callback</span> <span class="nx">transitions</span>
-            <span class="k">else</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="s">&quot;Error getting transitions: </span><span class="si">#{</span><span class="nx">error</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span>
-                <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <h2>Transition Issue</h2>
+<p>This will add a comment and time spent as a worklog item attached to the
+issue</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">addWorklog = </span><span class="nf">(issuedId) -&gt;</span>
+    <span class="nx">dutils</span><span class="p">.</span><span class="nx">ask</span> <span class="s">&quot;Comment for worklog&quot;</span><span class="p">,</span> <span class="sr">/.+/</span><span class="p">,</span> <span class="nf">(comment)-&gt;</span>
+        <span class="nx">dutils</span><span class="p">.</span><span class="nx">ask</span> <span class="s">&quot;Time Spent (for worklog)&quot;</span><span class="p">,</span> <span class="sr">/.+/</span><span class="p">,</span> <span class="nf">(timeSpent)-&gt;</span>
+            <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">addWorklog</span> <span class="nx">issueId</span><span class="p">,</span> <span class="nx">comment</span><span class="p">,</span> <span class="nx">timeSpent</span><span class="p">,</span> <span class="kc">true</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <h2>List Projects</h2>
 
-<p>Transitions an issue in Jira</p>
+<p>This will list all the projects available to you</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">listProjects = </span><span class="o">-&gt;</span>
+    <span class="nv">projects = </span><span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getMyProjects</span> <span class="p">(</span><span class="nx">projects</span><span class="p">)</span><span class="o">=&gt;</span>
+        <span class="k">for</span> <span class="nx">project</span> <span class="k">in</span> <span class="nx">projects</span>
+            <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">pp</span><span class="p">.</span><span class="nx">prettyPrintProject</span> <span class="nx">project</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <h2>Get Project</h2>
 
-<h3>Takes</h3>
+<p>Here we ask the user for their project, giving them an option for the
+default, ? for a list, or they can type in a number directly</p>
 
-<ul>
-<li>issueNum: the Id of the issue (either the AB-123 or the 123456)</li>
-<li>transitionNum: this is the id of the transition to apply to the issue</li>
-</ul>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">transitionIssue: </span><span class="nf">(issueNum, transitionNum)-&gt;</span>
-        <span class="nv">issueUpdate =</span>
-            <span class="nv">transition:</span>
-                <span class="nx">id</span><span class="o">:</span><span class="nx">transitionNum</span>
-        <span class="nx">@jira</span><span class="p">.</span><span class="nx">transitionIssue</span> <span class="nx">issueNum</span><span class="p">,</span> <span class="nx">issueUpdate</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span>
-            <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
-                <span class="vi">@response = </span><span class="nx">response</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Issue </span><span class="si">#{</span><span class="nx">issueNum</span><span class="si">}</span><span class="s"> was </span><span class="si">#{</span><span class="nx">color</span><span class="p">(</span><span class="s">&quot;transitioned&quot;</span><span class="p">,</span> <span class="s">&quot;green&quot;</span><span class="p">)</span><span class="si">}</span><span class="s">&quot;</span>
-            <span class="k">else</span>
-                <span class="vi">@error = </span><span class="nx">error</span> <span class="k">if</span> <span class="nx">error</span><span class="o">?</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="s">&quot;Error transitioning issue: </span><span class="si">#{</span><span class="nx">error</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span>
+<p>It calls itself if we list the projects, so that it can still be used to for
+what it was called to do</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">getProject = </span><span class="nf">(callback, defaultProj)-&gt;</span>
+    <span class="nx">dutils</span><span class="p">.</span><span class="nx">ask</span> <span class="s">&quot;Project (Enter for Default/? for list) [</span><span class="si">#{</span><span class="nx">defaultProj</span><span class="si">}</span><span class="s">] &quot;</span><span class="p">,</span> <span class="sr">/.*/</span><span class="p">,</span> <span class="nf">(project) -&gt;</span>
+        <span class="nx">unless</span> <span class="nx">project</span> <span class="o">is</span> <span class="s">&#39;?&#39;</span>
+            <span class="nx">callback</span> <span class="nx">configFile</span><span class="p">.</span><span class="nx">project</span>
+            <span class="k">return</span>
+        <span class="nv">projects = </span><span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getMyProjects</span> <span class="p">(</span><span class="nx">projects</span><span class="p">)</span><span class="o">=&gt;</span>
+            <span class="k">for</span> <span class="nx">project</span> <span class="k">in</span> <span class="nx">projects</span>
+                <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">pp</span><span class="p">.</span><span class="nx">prettyPrintProject</span> <span class="nx">project</span>
+            <span class="nx">getProject</span> <span class="nx">callback</span><span class="p">,</span> <span class="nx">defaultProj</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <h2>Add Item</h2>
 
-            <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <h2>Get My Issues</h2>
+<p>Adds an item to Jira. The project passed in comes from getProject currently.
+Takes a summary and a description then lists the issue types for the user to
+choose from</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">addItem = </span><span class="nf">(project)-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>Gather the summary, description, an type</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">dutils</span><span class="p">.</span><span class="nx">ask</span> <span class="s">&quot;Summary&quot;</span><span class="p">,</span> <span class="sr">/.+/</span><span class="p">,</span> <span class="nf">(summary)-&gt;</span>
+        <span class="nx">dutils</span><span class="p">.</span><span class="nx">ask</span> <span class="s">&quot;Description&quot;</span><span class="p">,</span> <span class="sr">/.+/</span><span class="p">,</span> <span class="nf">(description)-&gt;</span>
+            <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getIssueTypes</span> <span class="nf">(issueTypes)-&gt;</span>
+                <span class="nx">issueTypes</span><span class="p">.</span><span class="nx">sort</span> <span class="nx">dutils</span><span class="p">.</span><span class="nx">itemSorter</span>
+                <span class="k">for</span> <span class="nx">type</span> <span class="k">in</span> <span class="nx">issueTypes</span>
+                    <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">pp</span><span class="p">.</span><span class="nx">prettyPrintIssueTypes</span> <span class="nx">type</span>
+                    
+                <span class="nv">allowedTypes = </span><span class="p">(</span><span class="nx">type</span><span class="p">.</span><span class="nx">id</span> <span class="k">for</span> <span class="nx">type</span> <span class="k">in</span> <span class="nx">issueTypes</span><span class="p">)</span>
+                <span class="nv">allowedTypes = </span><span class="k">new</span> <span class="nb">RegExp</span> <span class="s">&quot;[</span><span class="si">#{</span><span class="nx">allowedTypes</span><span class="p">.</span><span class="nx">join</span> <span class="s">&#39;|&#39;</span><span class="si">}</span><span class="s">]&quot;</span>
+                <span class="nx">dutils</span><span class="p">.</span><span class="nx">ask</span> <span class="s">&quot;Type &quot;</span><span class="p">,</span> <span class="nx">allowedTypes</span><span class="p">,</span> <span class="nf">(type)-&gt;</span>
+                    <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">addIssue</span> <span class="nx">summary</span><span class="p">,</span> <span class="nx">description</span><span class="p">,</span> <span class="nx">type</span><span class="p">,</span> <span class="nx">project</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <h2>Main entry point</h2>
 
-<p>Gets a list of issues for the user listed in the config</p>
+<p>Parses the arguments and then calls a function above</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">if</span> <span class="nx">require</span><span class="p">.</span><span class="nx">main</span> <span class="o">is</span> <span class="nx">module</span>
+    <span class="nv">argv = </span><span class="p">(</span><span class="nx">require</span> <span class="s">&#39;optimist&#39;</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;f&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;find&#39;</span>
+            <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Finds the specified Jira ID&#39;</span>
+        <span class="p">}).</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;add&#39;</span>
+            <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Allows you to add a new Jira Task&#39;</span>
+        <span class="p">}).</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;transition&#39;</span>
+            <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Allows you to resolve a specific Jira ID&#39;</span>
+        <span class="p">}).</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;l&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;list&#39;</span>
+            <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Lists all your open issues&#39;</span>
+        <span class="p">}).</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;list-all&#39;</span>
+            <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Lists all your issues&#39;</span>
+        <span class="p">}).</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;p&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;projects&#39;</span>
+            <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Lists all your viewable projects&#39;</span>
+        <span class="p">}).</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;worklog&#39;</span>
+            <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Adds work to your task&#39;</span>
+        <span class="p">}).</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;h&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;help&#39;</span>
+            <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Shows this help message&#39;</span>
+        <span class="p">}).</span><span class="nx">usage</span><span class="p">(</span><span class="s">&#39;Usage:\n\tjira -f EG-143\n\tjira -r EG-143&#39;</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">string</span><span class="p">(</span><span class="s">&#39;f&#39;</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">string</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">string</span><span class="p">(</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
 
-<h3>Takes</h3>
+    <span class="k">if</span> <span class="nx">argv</span><span class="p">.</span><span class="nx">argv</span><span class="p">.</span><span class="nx">help</span>
+        <span class="nx">argv</span><span class="p">.</span><span class="nx">showHelp</span><span class="p">()</span>
+        <span class="k">return</span>
+    <span class="nv">args = </span><span class="nx">argv</span><span class="p">.</span><span class="nx">argv</span>
 
-<ul>
-<li>open: <code>boolean</code> which indicates if only open items should be shown,
-shows all otherwise</li>
-</ul>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">getMyIssues: </span><span class="nf">(open)-&gt;</span>
-        <span class="nx">@jira</span><span class="p">.</span><span class="nx">getUsersIssues</span> <span class="nx">@config</span><span class="p">.</span><span class="nx">user</span><span class="p">,</span> <span class="nx">open</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">issueList</span><span class="p">)</span> <span class="o">=&gt;</span>
-            <span class="k">if</span> <span class="nx">issueList</span><span class="o">?</span>
-                <span class="vi">@myIssues = </span><span class="nx">issueList</span>
-                <span class="k">for</span> <span class="nx">issue</span> <span class="k">in</span> <span class="nx">issueList</span><span class="p">.</span><span class="nx">issues</span>
-                    <span class="nx">@pp</span><span class="p">.</span><span class="nx">prettyPrintIssue</span> <span class="nx">issue</span>
-            <span class="k">else</span>
-                <span class="vi">@error = </span><span class="nx">error</span> <span class="k">if</span> <span class="nx">error</span><span class="o">?</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="s">&quot;Error retreiving issues list: </span><span class="si">#{</span><span class="nx">error</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <h2>List all Projects</h2>
+    <span class="nv">configFilePath = </span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">HOME</span><span class="p">,</span> <span class="s">&#39;.jiraclirc.json&#39;</span>
+    <span class="nx">unless</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span> <span class="nx">configFilePath</span>
+        <span class="nx">createConfigFile</span> <span class="nx">configFilePath</span>
+        <span class="k">return</span>
 
-<p>This lists all the projects viewable with your account</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">getMyProjects: </span><span class="nf">(callback)-&gt;</span>
-        <span class="nx">@jira</span><span class="p">.</span><span class="nx">listProjects</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">projectList</span><span class="p">)</span> <span class="o">=&gt;</span>
-            <span class="k">if</span> <span class="nx">projectList</span><span class="o">?</span>
-                <span class="nx">callback</span> <span class="nx">projectList</span>
-            <span class="k">else</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="s">&quot;Error listing projects: </span><span class="si">#{</span><span class="nx">error</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span>
-                <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span>
+    <span class="nv">configFile = </span><span class="nx">loadConfigFile</span><span class="p">(</span><span class="nx">configFilePath</span><span class="p">)</span>
+    <span class="nv">jiraCli = </span><span class="k">new</span> <span class="nx">JiraHelper</span> <span class="nx">configFile</span>
 
-
-<span class="nv">module.exports = </span><span class="p">{</span>
-    <span class="nx">JiraHelper</span>
-<span class="p">}</span>
+    <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">l</span>
+        <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getMyIssues</span> <span class="kc">true</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">c</span>
+        <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getMyIssues</span> <span class="kc">false</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">p</span>
+        <span class="nx">listProjects</span><span class="p">()</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">a</span>
+        <span class="nx">getProject</span> <span class="nx">addItem</span><span class="p">,</span> <span class="nx">configFile</span><span class="p">.</span><span class="nx">project</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">f</span><span class="o">?</span>
+        <span class="k">return</span> <span class="nx">unless</span> <span class="nx">paramIsText</span> <span class="nx">args</span><span class="p">.</span><span class="nx">f</span>
+        <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getIssue</span> <span class="nx">args</span><span class="p">.</span><span class="nx">f</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">w</span><span class="o">?</span>
+        <span class="k">return</span> <span class="nx">unless</span> <span class="nx">paramIsText</span> <span class="nx">args</span><span class="p">.</span><span class="nx">w</span>
+        <span class="nx">addWorklog</span> <span class="nx">args</span><span class="p">.</span><span class="nx">w</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">t</span><span class="o">?</span>
+        <span class="k">return</span> <span class="nx">unless</span> <span class="nx">paramIsText</span> <span class="nx">args</span><span class="p">.</span><span class="nx">t</span>
+        <span class="nx">transitionItem</span> <span class="nx">args</span><span class="p">.</span><span class="nx">t</span>
+    <span class="k">else</span>
+        <span class="nx">argv</span><span class="p">.</span><span class="nx">showHelp</span><span class="p">()</span>
 
 </pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
