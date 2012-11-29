@@ -61,6 +61,7 @@ module.exports = function(grunt) {
             src: ['src/*.coffee']
         }
     }
+    
   });
 
   // Default task.
@@ -70,5 +71,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-jasmine-node');
   grunt.loadNpmTasks('grunt-docco');
-
+  grunt.loadNpmTasks('grunt-bump');
 };
