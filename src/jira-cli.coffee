@@ -144,6 +144,8 @@ class JiraCli
     prettyPrintProject: (project) ->
         process.stdout.write color(project.key, "white+bold")
         process.stdout.write " - "
+        process.stdout.write project.id
+        process.stdout.write " - "
         process.stdout.write project.name
         process.stdout.write "\n"
 
