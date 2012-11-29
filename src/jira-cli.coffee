@@ -1,32 +1,25 @@
-# #Jira Command Line Client#
-#
-# This client depends on you having a json file in your home directory
-# named '.jiraclirc.json' it must contain:
-#
-#     { 
-#         "user": "USERNAME",
-#         "password":"PASSWORD",
-#         "host":"www.jira.com",
-#         "port":80,
-#         "project": 10100
-#     }
-#
-# JiraCli is on [github](https://github.com/tebriel/jira-cli)
-
 # Because colors are pretty
 color = require('ansi-color').set
 PrettyPrinter = require('./pretty-printer').PrettyPrinter
 # We're using node-jira-devel, [my version](https://github.com/tebriel/node-jira)
 JiraApi = require('node-jira-devel').JiraApi
 
-class JiraCli
-    # Builds a new JiraCli with the config file
+# ## JiraHelper ## 
+#
+# This does the fancy talking to JiraApi for us. It formats the objects the way
+# that Jira expects them to come in. Basically a wrapper for node-jira-devel
+class JiraHelper
+    # ## Constructor ##
+    #
+    # Builds a new JiraCli with the config settings
     constructor: (@config)->
         @jira = new JiraApi('http', @config.host, @config.port, @config.user, @config.password, '2')
         @response = null
         @error = null
         @pp = new PrettyPrinter
 
+    # ## Get Issue ##
+    #
     # Searches Jira for the issue number requested
     # this can be either a key AB-123 or just the number 123456
     getIssue: (issueNum)->
@@ -38,7 +31,9 @@ class JiraCli
                 @error = error if error?
                 console.log color("Error finding issue: #{error}", "red")
 
-    # ## Gets a list of all the available issue types ##
+    # ## Get Issue Types ##
+    #
+    # Gets a list of all the available issue types
     getIssueTypes: (callback)->
         @jira.listIssueTypes (error, response) =>
             if response?
@@ -47,8 +42,13 @@ class JiraCli
                 console.log color("Error listing issueTypes: #{error}", "red")
                 process.exit()
 
-    # Takes in a summary, description, and issue type (1, 2, and 4 on my
-    # servers) and creates a new issue, populating from your config file
+    # ## Add Issue ##
+    #
+    # ### Takes ###
+    # *  summary: details for the title of the issue
+    # *  description: more detailed than summary
+    # *  issue type: Id of the type (types are like bug, feature)
+    # *  project: this is the id of the project that you're assigning the issue # to
     addIssue: (summary, description, issueType, project) ->
         newIssue =
             fields:
@@ -70,6 +70,8 @@ class JiraCli
 
             process.exit()
 
+    # ## Delete an Issue ##
+    #
     # Deletes an issue (if you have permissions) from Jira. I haven't tested
     # this successfully because I don't have permissions.
     deleteIssue: (issueNum)->
@@ -82,7 +84,9 @@ class JiraCli
                 @error = error if error?
                 console.log color("Error deleting issue: #{error}", "red")
 
-    # ## Adds a simple worklog to an issue ##
+    # ## Add Worklog Item ##
+    #
+    # Adds a simple worklog to an issue
     addWorklog: (issueId, comment, timeSpent, exit)->
         worklog =
             comment:comment
@@ -96,7 +100,9 @@ class JiraCli
             process.exit() if exit
 
 
-    # ## Get Transitions List for an Issue ##
+    # ## List Transitions ##
+    #
+    # List the transitions available for an issue
     listTransitions: (issueNum, callback) ->
         @jira.listTransitions issueNum, (error, transitions)=>
             if transitions?
@@ -105,16 +111,18 @@ class JiraCli
                 console.log color("Error getting transitions: #{error}", "red")
                 process.exit()
 
-
-    # Resolves an issue in Jira, defaults to "Resolved", though maybe someday I
-    # should change it to "closed" or at least give an option
-    transitionIssue: (issueNum, transitionNum, comment, timeSpent)->
+    # ## Transition Issue ##
+    # 
+    # Transitions an issue in Jira
+    # 
+    # ### Takes ###
+    #
+    # *  issueNum: the Id of the issue (either the AB-123 or the 123456)
+    # *  transitionNum: this is the id of the transition to apply to the issue
+    transitionIssue: (issueNum, transitionNum)->
         issueUpdate =
             transition:
                 id:transitionNum
-            worklog:
-                comment:comment
-                timeSpent:timeSpent
         @jira.transitionIssue issueNum, issueUpdate, (error, response) =>
             if response?
                 @response = response
@@ -125,10 +133,14 @@ class JiraCli
 
             process.exit()
 
-    # Gets a list of issues for the user listed in the config file, pretty
-    # prints them and only shows open ones by default from the cli, probably
-    # should add an option, though I don't know who wants to see all their
-    # closed issues
+    # ## Get My Issues ##
+    #
+    # Gets a list of issues for the user listed in the config
+    #
+    # ### Takes ###
+    #
+    # *  open: `boolean` which indicates if only open items should be shown,
+    # shows all otherwise
     getMyIssues: (open)->
         @jira.getUsersIssues @config.user, open, (error, issueList) =>
             if issueList?
@@ -152,5 +164,5 @@ class JiraCli
 
 
 module.exports = {
-    JiraCli
+    JiraHelper
 }

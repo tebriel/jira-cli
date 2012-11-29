@@ -1,24 +1,64 @@
+# #Jira Command Line Client#
+#
+# This client depends on you having a json file in your home directory
+# named '.jiraclirc.json' it must contain:
+#
+#     { 
+#         "user": "USERNAME",
+#         "password":"PASSWORD",
+#         "host":"www.jira.com",
+#         "port":80,
+#         "project": 10100
+#     }
+#
+# JiraCli is on [github](https://github.com/tebriel/jira-cli)
 fs = require 'fs'
 path = require 'path'
-JiraCli = require('./jira-cli').JiraCli
+JiraHelper = require('./jira-cli').JiraHelper
 dutils = require('./data-utils')
 
+createConfigFile = (aConfigFile) ->
+    console.log "No config file found, answer these questions to create one!"
+    dutils.ask "Username", /.+/, (username) ->
+        dutils.ask "Password", /.+/, (password) ->
+            dutils.ask "Jira Host", /.+/, (host) ->
+                dutils.ask "Jira Port", /.+/, (port) ->
+                    dutils.ask "Default Project", /.*/, (project) ->
+                        config =
+                            user:username
+                            password:password
+                            host:host
+                            port:port
+                            project:project
+
+                        fs.writeFileSync aConfigFile, JSON.stringify(config), 'utf8'
+                        console.log "File created and saved as #{aConfigFile}"
+                        process.exit()
+
+
+# ## Check for Text Parameter ##
+#
+# Optimist returns a `bool` if the param is given but with nothing following it
 paramIsText = (param)->
     if typeof(param) is "boolean"
         argv.showHelp()
         return false
     true
 
-loadConfigFile = ->
-    configFile = path.join process.env.HOME, '.jiraclirc.json'
-    unless fs.existsSync configFile
-        console.log "Get your crap together and get a config file"
-        console.log configFile
-        return
-    configFile = fs.readFileSync configFile
+# ## Load the Config File ##
+#
+# TODO: Create if it doesn't exist
+loadConfigFile = (configFilePath) ->
+    configFile = fs.readFileSync configFilePath
 
     JSON.parse configFile
 
+# ## Transition Item ##
+#
+# This takes the issueId, lists the transitions available for the item and then
+# lets the user apply that transition to the item. Optionally the user can
+# specify a comment which will then prompt for time spent. This adds a work log
+# item to the item before the transition.
 transitionItem = (issueId) ->
     jiraCli.listTransitions issueId, (transitions) ->
         transitions.sort dutils.itemSorter
@@ -34,16 +74,31 @@ transitionItem = (issueId) ->
                 dutils.ask "Time Spent (for worklog)", /.+/, (timeSpent)->
                     jiraCli.addWorklog issueId, comment, timeSpent, false
                     jiraCli.transitionIssue issueId, type
+
+# ## Add Work Log ##
+#
+# This will add a comment and time spent as a worklog item attached to the
+# issue
 addWorklog = (issuedId) ->
     dutils.ask "Comment for worklog", /.+/, (comment)->
         dutils.ask "Time Spent (for worklog)", /.+/, (timeSpent)->
             jiraCli.addWorklog issueId, comment, timeSpent, true
 
+# ## List Projects ##
+#
+# This will list all the projects available to you
 listProjects = ->
     projects = jiraCli.getMyProjects (projects)=>
         for project in projects
             jiraCli.pp.prettyPrintProject project
 
+# ## Get Project ##
+# 
+# Here we ask the user for their project, giving them an option for the
+# default, ? for a list, or they can type in a number directly
+#
+# It calls itself if we list the projects, so that it can still be used to for
+# what it was called to do
 getProject = (callback, defaultProj)->
     dutils.ask "Project (Enter for Default/? for list) [#{defaultProj}] ", /.*/, (project) ->
         unless project is '?'
@@ -54,6 +109,11 @@ getProject = (callback, defaultProj)->
                 jiraCli.pp.prettyPrintProject project
             getProject callback, defaultProj
 
+# ## Add Item ##
+#
+# Adds an item to Jira. The project passed in comes from getProject currently.
+# Takes a summary and a description then lists the issue types for the user to
+# choose from
 addItem = (project)->
     # Gather the summary, description, an type
     dutils.ask "Summary", /.+/, (summary)->
@@ -68,8 +128,10 @@ addItem = (project)->
                 dutils.ask "Type ", allowedTypes, (type)->
                     jiraCli.addIssue summary, description, type, project
 
+# ## Main entry point ##
+#
+# Parses the arguments and then calls a function above
 if require.main is module
-    # Parse some options!!
     argv = (require 'optimist')
         .options('f', {
             alias:'find'
@@ -103,11 +165,15 @@ if require.main is module
     if argv.argv.help
         argv.showHelp()
         return
-
     args = argv.argv
-    configFile = loadConfigFile()
 
-    jiraCli = new JiraCli configFile
+    configFilePath = path.join process.env.HOME, '.jiraclirc.json'
+    unless fs.existsSync configFilePath
+        createConfigFile configFilePath
+        return
+
+    configFile = loadConfigFile(configFilePath)
+    jiraCli = new JiraHelper configFile
 
     if args.l
         jiraCli.getMyIssues true
