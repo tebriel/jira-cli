@@ -16,7 +16,9 @@
 # JiraCli is on [github](https://github.com/tebriel/jira-cli)
 fs = require 'fs'
 path = require 'path'
+# ## [JiraHelper docs/source](jira-cli.html)
 JiraHelper = require('./jira-cli').JiraHelper
+# ## [dutils docs/source](data-utils.html)
 dutils = require('./data-utils')
 
 createConfigFile = (aConfigFile) ->
