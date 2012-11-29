@@ -50,6 +50,26 @@ class JiraCli
                 @error = error if error?
                 console.log color("Error finding issue: #{error}", "red")
 
+
+    # ## Do some fancy formatting on issue types ##
+    prettyPrintIssueTypes: (issueType)->
+        process.stdout.write color(issueType.id, "white+bold")
+        process.stdout.write " - "
+        process.stdout.write issueType.name
+        if issueType.description.length > 0
+            process.stdout.write " - "
+            process.stdout.write issueType.description
+        process.stdout.write "\n"
+
+    # ## Gets a list of all the available issue types ##
+    getIssueTypes: (callback)->
+        @jira.listIssueTypes (error, response) =>
+            if response?
+                callback response
+            else
+                console.log color("Error listing issueTypes: #{error}", "red")
+                process.exit()
+
     # Takes in a summary, description, and issue type (1, 2, and 4 on my
     # servers) and creates a new issue, populating from your config file
     addIssue: (summary, description, issueType) ->
@@ -136,6 +156,7 @@ class JiraCli
                 callback projectList
             else
                 console.log color("Error listing projects: #{error}", "red")
+                process.exit()
 
 
 module.exports = {
@@ -180,7 +201,6 @@ if require.main is module
         }).options('p', {
             alias:'projects'
             describe:'Lists all your viewable projects'
-            default:false
         }).options('h', {
             alias:'help'
             describe:'Shows this help message'
@@ -226,8 +246,20 @@ if require.main is module
         # using my hardcoded ones
         ask "Summary", /.+/, (summary)->
             ask "Description", /.+/, (description)->
-                ask "Type (Bug:1, Feature:2, Improvement:4)", /[1|2|4]/, (type)->
-                    jiraCli.addIssue summary, description, type
+                jiraCli.getIssueTypes (issueTypes)->
+                    issueTypes.sort (a, b)->
+                        first = parseInt a.id
+                        second = parseInt b.id
+                        return -1 if first < second
+                        return 0 if first is second
+                        return 1 if first > second
+                    for type in issueTypes
+                        jiraCli.prettyPrintIssueTypes type
+                        
+                    allowedTypes = (type.id for type in issueTypes)
+                    allowedTypes = new RegExp "[#{allowedTypes.join '|'}]"
+                    ask "Type ", allowedTypes, (type)->
+                        jiraCli.addIssue summary, description, type
 
     else
         argv.showHelp()

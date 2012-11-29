@@ -35,8 +35,10 @@ Install the module with: `npm install jira-cli`
 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt](https://github.com/gruntjs/grunt).
 
+
 ## Release History
 
+*  _0.1.4 Listing Types in Create_
 *  _0.1.3 Listing Projects_
 *  _0.1.2 Moar Minor Doc Changes_
 *  _0.1.1 Minor Doc Changes_
