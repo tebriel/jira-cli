@@ -1,10 +1,5 @@
 module.exports = function(grunt) {
 
-  // Default task.
-  grunt.loadNpmTasks('grunt-contrib-coffee');
-  grunt.loadNpmTasks('grunt-jasmine-node');
-  grunt.registerTask('default', 'coffee jasmine_node concat');
-  grunt.registerTask('test', 'coffee jasmine_node');
   
   // Project configuration.
   grunt.initConfig({
@@ -60,8 +55,20 @@ module.exports = function(grunt) {
                 'lib/*.js': ['src/*.coffee']
             }
         }
+    },
+    docco: {
+        app: {
+            src: ['src/*.coffee']
+        }
     }
   });
 
+  // Default task.
+  grunt.registerTask('default', 'coffee jasmine_node concat');
+  grunt.registerTask('test', 'coffee jasmine_node');
+
+  grunt.loadNpmTasks('grunt-contrib-coffee');
+  grunt.loadNpmTasks('grunt-jasmine-node');
+  grunt.loadNpmTasks('grunt-docco');
 
 };
