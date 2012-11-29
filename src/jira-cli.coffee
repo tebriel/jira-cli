@@ -20,7 +20,7 @@ path = require 'path'
 color = require('ansi-color').set
 util = require 'util'
 # We're using node-jira-devel, [my version](https://github.com/tebriel/node-jira)
-JiraApi = require('jira').JiraApi
+JiraApi = require('node-jira-devel').JiraApi
 
 
 class JiraCli
