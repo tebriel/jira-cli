@@ -291,7 +291,7 @@ if require.main is module
             allowedTypes = (transition.id for transition in transitions)
             allowedTypes = new RegExp "[#{allowedTypes.join '|'}]"
             ask "Transtion Type ", allowedTypes, (type)->
-                ask "Comment for worklog", /.*/, (comment)->
+                ask "Comment for worklog (blank to skip)", /.*/, (comment)->
                     if comment.length is 0
                         jiraCli.transitionIssue args.t, type
                         return

@@ -15,6 +15,7 @@ Install the module with: `npm install jira-cli`
 *  Finds an issue by Key (AB-123) or Id (123456)
 *  Opens an issue in your project (from .jiraclirc.json)
 *  Transitions an issue (shows all available transition states)
+*  Adds a worklog to an issue
 
 ## TODO
 
@@ -38,6 +39,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+*  _0.1.8 Now allows entry of worklog when transitioning items, or by itself_
 *  _0.1.7 Now requiring my custom npm module for node-jira-devel_
 *  _0.1.6 Transitioning now shows all available options_
 *  _0.1.5 Listing Id for project_
