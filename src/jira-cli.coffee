@@ -19,8 +19,8 @@ path = require 'path'
 # Because colors are pretty
 color = require('ansi-color').set
 util = require 'util'
-# We're using node-jira, but [my version](https://github.com/tebriel/node-jira)
-JiraApi = require('jira').JiraApi
+# We're using node-jira-devel, [my version](https://github.com/tebriel/node-jira)
+JiraApi = require('node-jira-devel').JiraApi
 
 
 class JiraCli
@@ -108,6 +108,23 @@ class JiraCli
                 @error = error if error?
                 console.log color("Error deleting issue: #{error}", "red")
 
+    # ## Adds a simple worklog to an issue ##
+    addWorklog: (issueId, comment, timeSpent, exit)->
+        worklog =
+            comment:comment
+            timeSpent:timeSpent
+        @jira.addWorklog issueId, worklog, (error, response)=>
+            if response?
+                console.log "Worklog was #{color("added", "green")}"
+            else
+                @error = error if error?
+                console.log color("Error adding worklog: #{error}", "red")
+            process.exit() if exit
+
+
+    # ## Pretty Print Transition ##
+    # 
+    # Show a transition with the ID in bold followed by the name
     prettyPrintTransition: (transition) ->
         process.stdout.write color(transition.id, "white+bold")
         process.stdout.write " - "
@@ -126,10 +143,13 @@ class JiraCli
 
     # Resolves an issue in Jira, defaults to "Resolved", though maybe someday I
     # should change it to "closed" or at least give an option
-    transitionIssue: (issueNum, transitionNum)->
+    transitionIssue: (issueNum, transitionNum, comment, timeSpent)->
         issueUpdate =
             transition:
                 id:transitionNum
+            worklog:
+                comment:comment
+                timeSpent:timeSpent
         @jira.transitionIssue issueNum, issueUpdate, (error, response) =>
             if response?
                 @response = response
@@ -220,20 +240,22 @@ if require.main is module
             describe:'Allows you to resolve a specific Jira ID'
         }).options('l', {
             alias:'list'
-            default: false
             describe:'Lists all your open issues'
         }).options('p', {
             alias:'projects'
             describe:'Lists all your viewable projects'
+        }).options('w', {
+            alias:'worklog'
+            describe:'Adds work to your task'
         }).options('h', {
             alias:'help'
             describe:'Shows this help message'
-            default:false
         }).usage('Usage: jira -f EG-143 -- jira -r EG-143')
         .boolean('h')
         .boolean('l')
         .string('f')
         .string('t')
+        .string('w')
 
     if argv.argv.help
         argv.showHelp()
@@ -256,6 +278,11 @@ if require.main is module
     else if args.f?
         jiraCli.getIssue args.f
         return
+    else if args.w?
+        return if typeof(args.w) is "boolean"
+        ask "Comment for worklog", /.+/, (comment)->
+            ask "Time Spent (for worklog)", /.+/, (timeSpent)->
+                jiraCli.addWorklog args.w, comment, timeSpent, true
     else if args.t?
         jiraCli.listTransitions args.t, (transitions) ->
             transitions.sort issueSorter
@@ -264,7 +291,13 @@ if require.main is module
             allowedTypes = (transition.id for transition in transitions)
             allowedTypes = new RegExp "[#{allowedTypes.join '|'}]"
             ask "Transtion Type ", allowedTypes, (type)->
-                jiraCli.transitionIssue args.t, type
+                ask "Comment for worklog (blank to skip)", /.*/, (comment)->
+                    if comment.length is 0
+                        jiraCli.transitionIssue args.t, type
+                        return
+                    ask "Time Spent (for worklog)", /.+/, (timeSpent)->
+                        jiraCli.addWorklog args.t, comment, timeSpent, false
+                        jiraCli.transitionIssue args.t, type
     else if args.p?
         projects = jiraCli.getMyProjects (projects)=>
             for project in projects
