@@ -1,11 +1,14 @@
 {
   "name": "jira-cli",
   "description": "The best project ever.",
-  "version": "0.1.0",
-  "homepage": "https://github.com/tebriel/jira-cli",
+  "version": "0.1.4",
+  "homepage": "https://tebriel.github.com/jira-cli",
   "author": {
     "name": "Chris Moultrie",
     "email": "tebriel@gmail.com"
+  },
+  "bin": {
+    "jira": "./lib/jira-cli.js"
   },
   "repository": {
     "type": "git",
@@ -27,12 +30,23 @@
   "scripts": {
     "test": "grunt test"
   },
+  "dependencies": {
+    "jira": "git+https://github.com/tebriel/node-jira.git",
+    "optimist": "~0.3.5",
+    "ansi-color": "~0.2.1"
+  },
   "devDependencies": {
     "grunt": "~0.3.17",
     "grunt-contrib-coffee": "~0.3.2",
     "grunt-jasmine-node": "0.0.4",
-    "jira": "0.0.2",
-    "docco": "~0.4.0"
+    "docco": "~0.4.0",
+    "grunt-docco": "~0.1.2",
+    "grunt-bump": "0.0.1"
   },
-  "keywords": []
+  "keywords": [
+    "jira",
+    "awesomeness",
+    "win",
+    "whisky"
+  ]
 }

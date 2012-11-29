@@ -1,10 +1,19 @@
+fs = require 'fs'
+path = require 'path'
 jira = require '../src/jira-cli.coffee'
 
 describe "JiraCli", ->
     jiraCli = null
 
     beforeEach ->
-       jiraCli = new jira.JiraCli
+        configFile = path.join process.env.HOME, '.jiraclirc.json'
+        unless fs.existsSync configFile
+            console.log "Get your crap together and get a config file"
+            console.log configFile
+            return
+        configFile = fs.readFileSync configFile, 'utf8'
+        configFile = JSON.parse configFile
+        jiraCli = new jira.JiraCli configFile
 
     it "Gets an issue", ->
         jiraCli.getIssue "EG-135"
