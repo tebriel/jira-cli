@@ -13,7 +13,7 @@ describe "JiraCli", ->
             return
         configFile = fs.readFileSync configFile, 'utf8'
         configFile = JSON.parse configFile
-        jiraCli = new jira.JiraCli configFile
+        jiraCli = new jira.JiraHelper configFile
 
     it "Gets an issue", ->
         jiraCli.getIssue "EG-135"

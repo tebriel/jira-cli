@@ -20,8 +20,8 @@ module.exports = function(grunt) {
     },
     concat: {
         dist: {
-            src: ['<banner>', '<file_strip_banner:lib/jira-cli.js>'],
-            dest: 'lib/jira-cli.js'
+            src: ['<banner>', '<file_strip_banner:lib/jira.js>'],
+            dest: 'lib/jira.js'
         } 
     },
     lint: {
