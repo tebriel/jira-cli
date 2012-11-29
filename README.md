@@ -5,8 +5,8 @@ interface.
 
 ## Getting Started
 
-Install the module with: `npm install jira-cli`
-
+*  Install the module with: `npm install -g jira-cli`
+*  Run it with `jira`
 
 ## What does it do?
 
@@ -39,6 +39,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+*  _0.2.0 Refactored organization. Creates config file if not present_
 *  _0.1.9 Defaults for project in config, lists others if desired_
 *  _0.1.8 Now allows entry of worklog when transitioning items, or by itself_
 *  _0.1.7 Now requiring my custom npm module for node-jira-devel_

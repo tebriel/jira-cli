@@ -33,7 +33,10 @@ class PrettyPrinter
     #
     # Prints the project list in a non-awful format
     prettyPrintProject: (project) ->
-        process.stdout.write color(project.key, "white+bold")
+        key = project.key
+        while key.length < 12
+            key = ' ' + key
+        process.stdout.write color(key, "white+bold")
         process.stdout.write " - "
         process.stdout.write project.id
         process.stdout.write " - "

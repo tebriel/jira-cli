@@ -11,6 +11,8 @@
 #         "project": 10100
 #     }
 #
+# If not present, it will enter an interactive mode to create it with you
+#
 # JiraCli is on [github](https://github.com/tebriel/jira-cli)
 fs = require 'fs'
 path = require 'path'

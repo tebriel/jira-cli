@@ -1,14 +1,14 @@
 {
   "name": "jira-cli",
   "description": "Command line interface for Jira",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "homepage": "https://tebriel.github.com/jira-cli",
   "author": {
     "name": "Chris Moultrie",
     "email": "tebriel@gmail.com"
   },
   "bin": {
-    "jira": "./lib/jira-cli.js"
+    "jira": "./lib/jira.js"
   },
   "repository": {
     "type": "git",
