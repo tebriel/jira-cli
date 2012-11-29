@@ -30,6 +30,15 @@ class JiraCli
         @response = null
         @error = null
 
+    # Because I like colors, and I don't want to format them any more than this
+    prettyPrintIssue: (issue)->
+        sumColor = "green"
+        sumColor = "red" if +issue.fields.status.id in [5,6]
+        process.stdout.write color(issue.key, sumColor)
+        process.stdout.write " - "
+        process.stdout.write issue.fields.summary
+        process.stdout.write "\n"
+
     # Searches Jira for the issue number requested
     # this can be either a key AB-123 or just the number 123456
     getIssue: (issueNum)->
@@ -40,15 +49,6 @@ class JiraCli
             else
                 @error = error if error?
                 console.log color("Error finding issue: #{error}", "red")
-
-    # Because I like colors, and I don't want to format them any more than this
-    prettyPrintIssue: (issue)->
-        sumColor = "green"
-        sumColor = "red" if +issue.fields.status.id in [5,6]
-        process.stdout.write color(issue.key, sumColor)
-        process.stdout.write " - "
-        process.stdout.write issue.fields.summary
-        process.stdout.write "\n"
 
     # Takes in a summary, description, and issue type (1, 2, and 4 on my
     # servers) and creates a new issue, populating from your config file
@@ -118,6 +118,26 @@ class JiraCli
                 @error = error if error?
                 console.log color("Error retreiving issues list: #{error}", "red")
 
+    # ## Pretty Print Projects ##
+    #
+    # Prints the project list in a non-awful format
+    prettyPrintProject: (project) ->
+        process.stdout.write color(project.key, "white+bold")
+        process.stdout.write " - "
+        process.stdout.write project.name
+        process.stdout.write "\n"
+
+    # ## List all Projects ##
+    # 
+    # This lists all the projects viewable with your account
+    getMyProjects: (callback)->
+        @jira.listProjects (error, projectList) =>
+            if projectList?
+                callback projectList
+            else
+                console.log color("Error listing projects: #{error}", "red")
+
+
 module.exports = {
     JiraCli
 }
@@ -157,6 +177,10 @@ if require.main is module
             alias:'list'
             default: false
             describe:'Lists all your open issues'
+        }).options('p', {
+            alias:'projects'
+            describe:'Lists all your viewable projects'
+            default:false
         }).options('h', {
             alias:'help'
             describe:'Shows this help message'
@@ -190,6 +214,11 @@ if require.main is module
         return
     else if args.r?
         jiraCli.resolveIssue args.r
+        return
+    else if args.p?
+        projects = jiraCli.getMyProjects (projects)=>
+            for project in projects
+                jiraCli.prettyPrintProject project
         return
     else if args.a?
         # Gather the summary, description, an type
