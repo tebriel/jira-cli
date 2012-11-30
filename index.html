@@ -119,6 +119,9 @@ choose from</p>             </td>             <td class="code">               <d
         <span class="p">}).</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="p">{</span>
             <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;list-all&#39;</span>
             <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Lists all your issues&#39;</span>
+        <span class="p">}).</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;d&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;details&#39;</span>
+            <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Shows extra details (currently only for list)&#39;</span>
         <span class="p">}).</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;p&#39;</span><span class="p">,</span> <span class="p">{</span>
             <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;projects&#39;</span>
             <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Lists all your viewable projects&#39;</span>
@@ -129,6 +132,7 @@ choose from</p>             </td>             <td class="code">               <d
             <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;help&#39;</span>
             <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Shows this help message&#39;</span>
         <span class="p">}).</span><span class="nx">usage</span><span class="p">(</span><span class="s">&#39;Usage:\n\tjira -f EG-143\n\tjira -r EG-143&#39;</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">boolean</span><span class="p">(</span><span class="s">&#39;d&#39;</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">string</span><span class="p">(</span><span class="s">&#39;f&#39;</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">string</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">string</span><span class="p">(</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
@@ -147,16 +151,16 @@ choose from</p>             </td>             <td class="code">               <d
     <span class="nv">jiraCli = </span><span class="k">new</span> <span class="nx">JiraHelper</span> <span class="nx">configFile</span>
 
     <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">l</span>
-        <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getMyIssues</span> <span class="kc">true</span>
+        <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getMyIssues</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">d</span>
     <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">c</span>
-        <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getMyIssues</span> <span class="kc">false</span>
+        <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getMyIssues</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">d</span>
     <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">p</span>
         <span class="nx">listProjects</span><span class="p">()</span>
     <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">a</span>
         <span class="nx">getProject</span> <span class="nx">addItem</span><span class="p">,</span> <span class="nx">configFile</span><span class="p">.</span><span class="nx">project</span>
     <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">f</span><span class="o">?</span>
         <span class="k">return</span> <span class="nx">unless</span> <span class="nx">paramIsText</span> <span class="nx">args</span><span class="p">.</span><span class="nx">f</span>
-        <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getIssue</span> <span class="nx">args</span><span class="p">.</span><span class="nx">f</span>
+        <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getIssue</span> <span class="nx">args</span><span class="p">.</span><span class="nx">f</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">d</span>
     <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">w</span><span class="o">?</span>
         <span class="k">return</span> <span class="nx">unless</span> <span class="nx">paramIsText</span> <span class="nx">args</span><span class="p">.</span><span class="nx">w</span>
         <span class="nx">addWorklog</span> <span class="nx">args</span><span class="p">.</span><span class="nx">w</span>

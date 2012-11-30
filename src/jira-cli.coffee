@@ -23,11 +23,11 @@ class JiraHelper
     #
     # Searches Jira for the issue number requested
     # this can be either a key AB-123 or just the number 123456
-    getIssue: (issueNum)->
+    getIssue: (issueNum, details)->
         @jira.findIssue issueNum, (error, response) =>
             if response?
                 @response = response
-                @pp.prettyPrintIssue response
+                @pp.prettyPrintIssue response, details
             else
                 @error = error if error?
                 console.log color("Error finding issue: #{error}", "red")
@@ -142,12 +142,12 @@ class JiraHelper
     #
     # *  open: `boolean` which indicates if only open items should be shown,
     # shows all otherwise
-    getMyIssues: (open)->
+    getMyIssues: (open, details)->
         @jira.getUsersIssues @config.user, open, (error, issueList) =>
             if issueList?
                 @myIssues = issueList
                 for issue in issueList.issues
-                    @pp.prettyPrintIssue issue
+                    @pp.prettyPrintIssue issue, details
             else
                 @error = error if error?
                 console.log color("Error retreiving issues list: #{error}", "red")

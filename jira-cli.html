@@ -10,11 +10,11 @@ that Jira expects them to come in. Basically a wrapper for node-jira-devel</p>  
         <span class="vi">@pp = </span><span class="k">new</span> <span class="nx">PrettyPrinter</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h2>Get Issue</h2>
 
 <p>Searches Jira for the issue number requested
-this can be either a key AB-123 or just the number 123456</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">getIssue: </span><span class="nf">(issueNum)-&gt;</span>
+this can be either a key AB-123 or just the number 123456</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">getIssue: </span><span class="nf">(issueNum, details)-&gt;</span>
         <span class="nx">@jira</span><span class="p">.</span><span class="nx">findIssue</span> <span class="nx">issueNum</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span>
             <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
                 <span class="vi">@response = </span><span class="nx">response</span>
-                <span class="nx">@pp</span><span class="p">.</span><span class="nx">prettyPrintIssue</span> <span class="nx">response</span>
+                <span class="nx">@pp</span><span class="p">.</span><span class="nx">prettyPrintIssue</span> <span class="nx">response</span><span class="p">,</span> <span class="nx">details</span>
             <span class="k">else</span>
                 <span class="vi">@error = </span><span class="nx">error</span> <span class="k">if</span> <span class="nx">error</span><span class="o">?</span>
                 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="s">&quot;Error finding issue: </span><span class="si">#{</span><span class="nx">error</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <h2>Get Issue Types</h2>
@@ -110,12 +110,12 @@ this successfully because I don't have permissions.</p>             </td>       
 <ul>
 <li>open: <code>boolean</code> which indicates if only open items should be shown,
 shows all otherwise</li>
-</ul>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">getMyIssues: </span><span class="nf">(open)-&gt;</span>
+</ul>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">getMyIssues: </span><span class="nf">(open, details)-&gt;</span>
         <span class="nx">@jira</span><span class="p">.</span><span class="nx">getUsersIssues</span> <span class="nx">@config</span><span class="p">.</span><span class="nx">user</span><span class="p">,</span> <span class="nx">open</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">issueList</span><span class="p">)</span> <span class="o">=&gt;</span>
             <span class="k">if</span> <span class="nx">issueList</span><span class="o">?</span>
                 <span class="vi">@myIssues = </span><span class="nx">issueList</span>
                 <span class="k">for</span> <span class="nx">issue</span> <span class="k">in</span> <span class="nx">issueList</span><span class="p">.</span><span class="nx">issues</span>
-                    <span class="nx">@pp</span><span class="p">.</span><span class="nx">prettyPrintIssue</span> <span class="nx">issue</span>
+                    <span class="nx">@pp</span><span class="p">.</span><span class="nx">prettyPrintIssue</span> <span class="nx">issue</span><span class="p">,</span> <span class="nx">details</span>
             <span class="k">else</span>
                 <span class="vi">@error = </span><span class="nx">error</span> <span class="k">if</span> <span class="nx">error</span><span class="o">?</span>
                 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="s">&quot;Error retreiving issues list: </span><span class="si">#{</span><span class="nx">error</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <h2>List all Projects</h2>
