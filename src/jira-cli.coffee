@@ -2,8 +2,7 @@
 color = require('ansi-color').set
 # [PrettyPrinter Sourc/Doc](pretty-printer.html)
 PrettyPrinter = require('./pretty-printer').PrettyPrinter
-# We're using node-jira-devel, [my version](https://github.com/tebriel/node-jira)
-JiraApi = require('node-jira-devel').JiraApi
+JiraApi = require('jira').JiraApi
 
 # ## JiraHelper ##
 #
