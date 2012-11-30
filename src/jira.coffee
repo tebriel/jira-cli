@@ -154,6 +154,9 @@ if require.main is module
         }).options('c', {
             alias:'list-all'
             describe:'Lists all your issues'
+        }).options('d', {
+            alias:'details'
+            describe:'Shows extra details (currently only for list)'
         }).options('p', {
             alias:'projects'
             describe:'Lists all your viewable projects'
@@ -164,6 +167,7 @@ if require.main is module
             alias:'help'
             describe:'Shows this help message'
         }).usage('Usage:\n\tjira -f EG-143\n\tjira -r EG-143')
+        .boolean('d')
         .string('f')
         .string('t')
         .string('w')
@@ -182,16 +186,16 @@ if require.main is module
     jiraCli = new JiraHelper configFile
 
     if args.l
-        jiraCli.getMyIssues true
+        jiraCli.getMyIssues true, args.d
     else if args.c
-        jiraCli.getMyIssues false
+        jiraCli.getMyIssues false, args.d
     else if args.p
         listProjects()
     else if args.a
         getProject addItem, configFile.project
     else if args.f?
         return unless paramIsText args.f
-        jiraCli.getIssue args.f
+        jiraCli.getIssue args.f, args.d
     else if args.w?
         return unless paramIsText args.w
         addWorklog args.w

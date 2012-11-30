@@ -1,14 +1,19 @@
 color = require('ansi-color').set
+wrap = require('wordwrap')(5, 65)
 
 class PrettyPrinter
     # Because I like colors, and I don't want to format them any more than this
-    prettyPrintIssue: (issue)->
+    prettyPrintIssue: (issue, detail)->
         sumColor = "green"
         sumColor = "red" if +issue.fields.status.id in [5,6]
-        process.stdout.write color(issue.key, sumColor)
+        process.stdout.write color(issue.key, sumColor + "+bold")
         process.stdout.write " - "
         process.stdout.write issue.fields.summary
         process.stdout.write "\n"
+        if detail and issue.fields.description?
+            process.stdout.write color("Description:\n", "white+bold")
+            process.stdout.write wrap(issue.fields.description)
+            process.stdout.write "\n\n"
 
     # ## Do some fancy formatting on issue types ##
     prettyPrintIssueTypes: (issueType)->

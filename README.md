@@ -39,6 +39,8 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+*  _0.2.2 Added wordrap to -d so that the text is easier to grok_
+*  _0.2.1 Added -d flag to show details for list/find_
 *  _0.2.0 Refactored organization. Creates config file if not present_
 *  _0.1.9 Defaults for project in config, lists others if desired_
 *  _0.1.8 Now allows entry of worklog when transitioning items, or by itself_

@@ -1,7 +1,7 @@
 {
   "name": "jira-cli",
   "description": "Command line interface for Jira",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "homepage": "https://tebriel.github.com/jira-cli",
   "author": {
     "name": "Chris Moultrie",
@@ -31,7 +31,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "node-jira-devel": ">= 0.1.7",
+    "node-jira-devel": ">= 0.1.9",
     "optimist": "~0.3.5",
     "ansi-color": "~0.2.1"
   },
