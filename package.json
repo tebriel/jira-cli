@@ -33,7 +33,8 @@
   "dependencies": {
     "node-jira-devel": ">= 0.1.9",
     "optimist": "~0.3.5",
-    "ansi-color": "~0.2.1"
+    "ansi-color": "~0.2.1",
+    "wordwrap": "0.0.2"
   },
   "devDependencies": {
     "grunt": "~0.3.17",
