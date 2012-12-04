@@ -68,18 +68,19 @@ loadConfigFile = (configFilePath) ->
 transitionItem = (issueId) ->
     jiraCli.listTransitions issueId, (transitions) ->
         transitions.sort dutils.itemSorter
-        for transition in transitions
-            jiraCli.pp.prettyPrintTransition transition
-        allowedTypes = (transition.id for transition in transitions)
-        allowedTypes = new RegExp "[#{allowedTypes.join '|'}]"
+        for transition, index in transitions
+            jiraCli.pp.prettyPrintTransition transition, index + 1
+        allowedTypes = [1..transitions.length]
+        #allowedTypes = new RegExp "[#{allowedTypes.join '|'}]"
         dutils.ask "Transtion Type ", allowedTypes, (type)->
             dutils.ask "Comment for worklog (blank to skip)", /.*/, (comment)->
                 if comment.length is 0
-                    jiraCli.transitionIssue issueId, type
+                    jiraCli.transitionIssue issueId, transitions[type - 1]
                     return
                 dutils.ask "Time Spent (for worklog)", /.+/, (timeSpent)->
                     jiraCli.addWorklog issueId, comment, timeSpent, false
-                    jiraCli.transitionIssue issueId, type
+                    jiraCli.transitionIssue issueId, transitions[type - 1]
+        , allowedTypes
 
 # ## Add Work Log ##
 #
@@ -126,13 +127,13 @@ addItem = (project)->
         dutils.ask "Description", /.+/, (description)->
             jiraCli.getIssueTypes (issueTypes)->
                 issueTypes.sort dutils.itemSorter
-                for type in issueTypes
-                    jiraCli.pp.prettyPrintIssueTypes type
+                for type, index in issueTypes
+                    jiraCli.pp.prettyPrintIssueTypes type, index + 1
                     
-                allowedTypes = (type.id for type in issueTypes)
-                allowedTypes = new RegExp "[#{allowedTypes.join '|'}]"
+                allowedTypes = [1..issueTypes.length]
                 dutils.ask "Type ", allowedTypes, (type)->
-                    jiraCli.addIssue summary, description, type, project
+                    jiraCli.addIssue summary, description, issueTypes[type - 1], project
+                , allowedTypes
 
 # ## Main entry point ##
 #

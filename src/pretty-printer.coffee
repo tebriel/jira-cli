@@ -17,8 +17,8 @@ class PrettyPrinter
             process.stdout.write "\n\n"
 
     # ## Do some fancy formatting on issue types ##
-    prettyPrintIssueTypes: (issueType)->
-        process.stdout.write color(issueType.id, "white+bold")
+    prettyPrintIssueTypes: (issueType, index)->
+        process.stdout.write color(index, "white+bold")
         process.stdout.write " - "
         process.stdout.write issueType.name
         if issueType.description.length > 0
@@ -29,8 +29,8 @@ class PrettyPrinter
     # ## Pretty Print Transition ##
     # 
     # Show a transition with the ID in bold followed by the name
-    prettyPrintTransition: (transition) ->
-        process.stdout.write color(transition.id, "white+bold")
+    prettyPrintTransition: (transition, index) ->
+        process.stdout.write color(index, "white+bold")
         process.stdout.write " - "
         process.stdout.write transition.name
         process.stdout.write "\n"
