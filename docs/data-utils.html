@@ -10,7 +10,8 @@
 <li>question: (text for the user)</li>
 <li>format: RegExp which determines if the input was valid</li>
 <li>callback: for when we have proper input</li>
-</ul>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">ask = </span><span class="nf">(question, format, callback) -&gt;</span>
+<li>range: integer array that specifies allowed input</li>
+</ul>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">ask = </span><span class="nf">(question, format, callback, range) -&gt;</span>
     <span class="nv">stdin = </span><span class="nx">process</span><span class="p">.</span><span class="nx">stdin</span>
     <span class="nv">stdout = </span><span class="nx">process</span><span class="p">.</span><span class="nx">stdout</span>
  
@@ -20,11 +21,16 @@
     <span class="nx">stdin</span><span class="p">.</span><span class="nx">once</span> <span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="nf">(data) -&gt;</span>
         <span class="nv">data = </span><span class="nx">data</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">trim</span><span class="p">()</span>
  
-        <span class="k">if</span> <span class="nx">format</span><span class="p">.</span><span class="nx">test</span> <span class="nx">data</span>
+        <span class="k">if</span> <span class="nx">range</span><span class="o">?</span>
+            <span class="k">if</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="k">in</span> <span class="nx">range</span>
+                <span class="nx">callback</span> <span class="nx">data</span>
+                <span class="k">return</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="nx">format</span><span class="p">.</span><span class="nx">test</span> <span class="nx">data</span>
             <span class="nx">callback</span> <span class="nx">data</span>
-        <span class="k">else</span>
-            <span class="nx">stdout</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s">&quot;It should match: &quot;</span> <span class="o">+</span> <span class="nx">format</span> <span class="o">+</span> <span class="s">&quot;\n&quot;</span><span class="p">)</span>
-            <span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">,</span> <span class="nx">format</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h2>Item Sorter</h2>
+            <span class="k">return</span>
+
+        <span class="nx">stdout</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s">&quot;It should match: &quot;</span> <span class="o">+</span> <span class="nx">format</span> <span class="o">+</span> <span class="s">&quot;\n&quot;</span><span class="p">)</span>
+        <span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">,</span> <span class="nx">format</span><span class="p">,</span> <span class="nx">callback</span><span class="p">,</span> <span class="nx">range</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h2>Item Sorter</h2>
 
 <p>Function for JS .Sort() which sorts items by id in ascending order</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">itemSorter = </span><span class="nf">(a, b)-&gt;</span>
     <span class="nv">first = </span><span class="nb">parseInt</span> <span class="nx">a</span><span class="p">.</span><span class="nx">id</span>

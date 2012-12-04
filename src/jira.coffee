@@ -75,11 +75,11 @@ transitionItem = (issueId) ->
         dutils.ask "Transtion Type ", allowedTypes, (type)->
             dutils.ask "Comment for worklog (blank to skip)", /.*/, (comment)->
                 if comment.length is 0
-                    jiraCli.transitionIssue issueId, transitions[type - 1]
+                    jiraCli.transitionIssue issueId, transitions[type - 1].id
                     return
                 dutils.ask "Time Spent (for worklog)", /.+/, (timeSpent)->
                     jiraCli.addWorklog issueId, comment, timeSpent, false
-                    jiraCli.transitionIssue issueId, transitions[type - 1]
+                    jiraCli.transitionIssue issueId, transitions[type - 1].id
         , allowedTypes
 
 # ## Add Work Log ##
@@ -132,7 +132,7 @@ addItem = (project)->
                     
                 allowedTypes = [1..issueTypes.length]
                 dutils.ask "Type ", allowedTypes, (type)->
-                    jiraCli.addIssue summary, description, issueTypes[type - 1], project
+                    jiraCli.addIssue summary, description, issueTypes[type - 1].id, project
                 , allowedTypes
 
 # ## Main entry point ##
