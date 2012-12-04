@@ -102,7 +102,24 @@ this successfully because I don't have permissions.</p>             </td>       
                 <span class="vi">@error = </span><span class="nx">error</span> <span class="k">if</span> <span class="nx">error</span><span class="o">?</span>
                 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="s">&quot;Error transitioning issue: </span><span class="si">#{</span><span class="nx">error</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span>
 
-            <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <h2>Get My Issues</h2>
+            <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <h2>Search Jira</h2>
+
+<p>Passes a jql formatted query to jira for search</p>
+
+<h3>Takes</h3>
+
+<ul>
+<li>searchQuery: a jql formatted search query string
+shows all otherwise</li>
+</ul>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">searchJira: </span><span class="nf">(searchQuery, details)-&gt;</span>
+        <span class="nx">@jira</span><span class="p">.</span><span class="nx">searchJira</span> <span class="nx">searchQuery</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">issueList</span><span class="p">)</span> <span class="o">=&gt;</span>
+            <span class="k">if</span> <span class="nx">issueList</span><span class="o">?</span>
+                <span class="vi">@myIssues = </span><span class="nx">issueList</span>
+                <span class="k">for</span> <span class="nx">issue</span> <span class="k">in</span> <span class="nx">issueList</span><span class="p">.</span><span class="nx">issues</span>
+                    <span class="nx">@pp</span><span class="p">.</span><span class="nx">prettyPrintIssue</span> <span class="nx">issue</span><span class="p">,</span> <span class="nx">details</span>
+            <span class="k">else</span>
+                <span class="vi">@error = </span><span class="nx">error</span> <span class="k">if</span> <span class="nx">error</span><span class="o">?</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="s">&quot;Error retreiving issues list: </span><span class="si">#{</span><span class="nx">error</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <h2>Get My Issues</h2>
 
 <p>Gets a list of issues for the user listed in the config</p>
 
@@ -119,7 +136,7 @@ shows all otherwise</li>
                     <span class="nx">@pp</span><span class="p">.</span><span class="nx">prettyPrintIssue</span> <span class="nx">issue</span><span class="p">,</span> <span class="nx">details</span>
             <span class="k">else</span>
                 <span class="vi">@error = </span><span class="nx">error</span> <span class="k">if</span> <span class="nx">error</span><span class="o">?</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="s">&quot;Error retreiving issues list: </span><span class="si">#{</span><span class="nx">error</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <h2>List all Projects</h2>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="s">&quot;Error retreiving issues list: </span><span class="si">#{</span><span class="nx">error</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <h2>List all Projects</h2>
 
 <p>This lists all the projects viewable with your account</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">getMyProjects: </span><span class="nf">(callback)-&gt;</span>
         <span class="nx">@jira</span><span class="p">.</span><span class="nx">listProjects</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">projectList</span><span class="p">)</span> <span class="o">=&gt;</span>

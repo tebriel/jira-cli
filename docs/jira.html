@@ -128,11 +128,15 @@ choose from</p>             </td>             <td class="code">               <d
         <span class="p">}).</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="p">{</span>
             <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;worklog&#39;</span>
             <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Adds work to your task&#39;</span>
+        <span class="p">}).</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;s&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;search&#39;</span>
+            <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Pass a jql string to jira&#39;</span>
         <span class="p">}).</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;h&#39;</span><span class="p">,</span> <span class="p">{</span>
             <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;help&#39;</span>
             <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Shows this help message&#39;</span>
         <span class="p">}).</span><span class="nx">usage</span><span class="p">(</span><span class="s">&#39;Usage:\n\tjira -f EG-143\n\tjira -r EG-143&#39;</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">boolean</span><span class="p">(</span><span class="s">&#39;d&#39;</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">string</span><span class="p">(</span><span class="s">&#39;s&#39;</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">string</span><span class="p">(</span><span class="s">&#39;f&#39;</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">string</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">string</span><span class="p">(</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
@@ -154,6 +158,9 @@ choose from</p>             </td>             <td class="code">               <d
         <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getMyIssues</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">d</span>
     <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">c</span>
         <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getMyIssues</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">d</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">s</span>
+        <span class="k">return</span> <span class="nx">unless</span> <span class="nx">paramIsText</span> <span class="nx">args</span><span class="p">.</span><span class="nx">s</span>
+        <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">searchJira</span> <span class="nx">args</span><span class="p">.</span><span class="nx">s</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">d</span>
     <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">p</span>
         <span class="nx">listProjects</span><span class="p">()</span>
     <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">a</span>
