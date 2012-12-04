@@ -163,11 +163,15 @@ if require.main is module
         }).options('w', {
             alias:'worklog'
             describe:'Adds work to your task'
+        }).options('s', {
+            alias:'search'
+            describe:'Pass a jql string to jira'
         }).options('h', {
             alias:'help'
             describe:'Shows this help message'
         }).usage('Usage:\n\tjira -f EG-143\n\tjira -r EG-143')
         .boolean('d')
+        .string('s')
         .string('f')
         .string('t')
         .string('w')
@@ -189,6 +193,9 @@ if require.main is module
         jiraCli.getMyIssues true, args.d
     else if args.c
         jiraCli.getMyIssues false, args.d
+    else if args.s
+        return unless paramIsText args.s
+        jiraCli.searchJira args.s, args.d
     else if args.p
         listProjects()
     else if args.a

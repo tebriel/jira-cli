@@ -133,6 +133,24 @@ class JiraHelper
 
             process.exit()
 
+    # ## Search Jira ##
+    #
+    # Passes a jql formatted query to jira for search
+    #
+    # ### Takes ###
+    #
+    # *  searchQuery: a jql formatted search query string
+    # shows all otherwise
+    searchJira: (searchQuery, details)->
+        @jira.searchJira searchQuery, (error, issueList) =>
+            if issueList?
+                @myIssues = issueList
+                for issue in issueList.issues
+                    @pp.prettyPrintIssue issue, details
+            else
+                @error = error if error?
+                console.log color("Error retreiving issues list: #{error}", "red")
+
     # ## Get My Issues ##
     #
     # Gets a list of issues for the user listed in the config

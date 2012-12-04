@@ -3,6 +3,7 @@ wrap = require('wordwrap')(5, 65)
 
 class PrettyPrinter
     # Because I like colors, and I don't want to format them any more than this
+    # TODO: Don't hardcode 5 and 6 anymore
     prettyPrintIssue: (issue, detail)->
         sumColor = "green"
         sumColor = "red" if +issue.fields.status.id in [5,6]
