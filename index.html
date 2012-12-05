@@ -1,1 +1,130 @@
-<head /><body>Documentation is now <a href="docs/jira.html">here</a></body>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Jira-cli by tebriel</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Jira-cli</h1>
+        <p>Simple Command Line Jira Client in Node.js</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/tebriel/jira-cli" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/tebriel/jira-cli/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/tebriel/jira-cli/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>jira-cli</h1>
+
+<p>This is a command line client for jira, because no one likes their terrible
+interface.</p>
+
+<h2>Getting Started</h2>
+
+<ul>
+<li> Install the module with: <code>npm install -g jira-cli</code>
+</li>
+<li> Run it with <code>jira</code>
+</li>
+</ul><h2>What does it do?</h2>
+
+<ul>
+<li> Lists all a user's issues</li>
+<li> List all a user's projects</li>
+<li> Finds an issue by Key (AB-123) or Id (123456)</li>
+<li> Opens an issue </li>
+<li> Allows user to add a new ticket to different projects</li>
+<li> Transitions an issue (shows all available transition states)</li>
+<li> Adds a worklog to an issue</li>
+</ul><h2>TODO</h2>
+
+<ul>
+<li> Allow searching to be limited by project id</li>
+</ul><h2>Documentation</h2>
+
+<p><a href="http://tebriel.github.com/jira-cli/docs/jira.html">GitHub Documentation</a></p>
+
+<h2>Examples</h2>
+
+<p><code>jira -l</code></p>
+
+<p><code>jira -f AB-123</code></p>
+
+<h2>Contributing</h2>
+
+<p>In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using <a href="https://github.com/gruntjs/grunt">grunt</a>.</p>
+
+<h2>Release History</h2>
+
+<ul>
+<li> <em>0.2.5 Now normalizing event types and item types</em>
+</li>
+<li> <em>0.2.4 I did something here, don't remember</em>
+</li>
+<li> <em>0.2.3 Fixed an issue where invalid input caused an exception</em>
+</li>
+<li> <em>0.2.2 Added wordrap to -d so that the text is easier to grok</em>
+</li>
+<li> <em>0.2.1 Added -d flag to show details for list/find</em>
+</li>
+<li> <em>0.2.0 Refactored organization. Creates config file if not present</em>
+</li>
+<li> <em>0.1.9 Defaults for project in config, lists others if desired</em>
+</li>
+<li> <em>0.1.8 Now allows entry of worklog when transitioning items, or by itself</em>
+</li>
+<li> <em>0.1.7 Now requiring my custom npm module for node-jira-devel</em>
+</li>
+<li> <em>0.1.6 Transitioning now shows all available options</em>
+</li>
+<li> <em>0.1.5 Listing Id for project</em>
+</li>
+<li> <em>0.1.4 Listing Types in Create</em>
+</li>
+<li> <em>0.1.3 Listing Projects</em>
+</li>
+<li> <em>0.1.2 Moar Minor Doc Changes</em>
+</li>
+<li> <em>0.1.1 Minor Doc Changes</em>
+</li>
+<li> <em>0.1.0 Initial Release</em>
+</li>
+</ul><h2>License</h2>
+
+<p>Copyright (c) 2012 Chris Moultrie<br>
+Licensed under the MIT license.</p>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/tebriel">tebriel</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
