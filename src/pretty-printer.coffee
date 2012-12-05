@@ -3,6 +3,7 @@ wrap = require('wordwrap')(5, 65)
 
 class PrettyPrinter
     # Because I like colors, and I don't want to format them any more than this
+    # TODO: Don't hardcode 5 and 6 anymore
     prettyPrintIssue: (issue, detail)->
         sumColor = "green"
         sumColor = "red" if +issue.fields.status.id in [5,6]
@@ -16,8 +17,8 @@ class PrettyPrinter
             process.stdout.write "\n\n"
 
     # ## Do some fancy formatting on issue types ##
-    prettyPrintIssueTypes: (issueType)->
-        process.stdout.write color(issueType.id, "white+bold")
+    prettyPrintIssueTypes: (issueType, index)->
+        process.stdout.write color(index, "white+bold")
         process.stdout.write " - "
         process.stdout.write issueType.name
         if issueType.description.length > 0
@@ -28,8 +29,8 @@ class PrettyPrinter
     # ## Pretty Print Transition ##
     # 
     # Show a transition with the ID in bold followed by the name
-    prettyPrintTransition: (transition) ->
-        process.stdout.write color(transition.id, "white+bold")
+    prettyPrintTransition: (transition, index) ->
+        process.stdout.write color(index, "white+bold")
         process.stdout.write " - "
         process.stdout.write transition.name
         process.stdout.write "\n"

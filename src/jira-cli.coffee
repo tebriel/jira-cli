@@ -2,8 +2,7 @@
 color = require('ansi-color').set
 # [PrettyPrinter Sourc/Doc](pretty-printer.html)
 PrettyPrinter = require('./pretty-printer').PrettyPrinter
-# We're using node-jira-devel, [my version](https://github.com/tebriel/node-jira)
-JiraApi = require('node-jira-devel').JiraApi
+JiraApi = require('jira').JiraApi
 
 # ## JiraHelper ##
 #
@@ -133,6 +132,24 @@ class JiraHelper
                 console.log color("Error transitioning issue: #{error}", "red")
 
             process.exit()
+
+    # ## Search Jira ##
+    #
+    # Passes a jql formatted query to jira for search
+    #
+    # ### Takes ###
+    #
+    # *  searchQuery: a jql formatted search query string
+    # shows all otherwise
+    searchJira: (searchQuery, details)->
+        @jira.searchJira searchQuery, (error, issueList) =>
+            if issueList?
+                @myIssues = issueList
+                for issue in issueList.issues
+                    @pp.prettyPrintIssue issue, details
+            else
+                @error = error if error?
+                console.log color("Error retreiving issues list: #{error}", "red")
 
     # ## Get My Issues ##
     #

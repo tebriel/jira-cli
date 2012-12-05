@@ -7,7 +7,8 @@
 # *  question: (text for the user)
 # *  format: RegExp which determines if the input was valid
 # *  callback: for when we have proper input
-ask = (question, format, callback) ->
+# *  range: integer array that specifies allowed input
+ask = (question, format, callback, range) ->
     stdin = process.stdin
     stdout = process.stdout
  
@@ -17,11 +18,16 @@ ask = (question, format, callback) ->
     stdin.once 'data', (data) ->
         data = data.toString().trim()
  
-        if format.test data
+        if range?
+            if parseInt(data) in range
+                callback data
+                return
+        else if format.test data
             callback data
-        else
-            stdout.write("It should match: "+ format +"\n")
-            ask(question, format, callback)
+            return
+
+        stdout.write("It should match: " + format + "\n")
+        ask(question, format, callback, range)
 
 # ## Item Sorter ##
 # 
