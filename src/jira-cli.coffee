@@ -13,7 +13,8 @@ class JiraHelper
     #
     # Builds a new JiraCli with the config settings
     constructor: (@config)->
-        @jira = new JiraApi('http', @config.host, @config.port, @config.user, @config.password, '2')
+        @jira = new JiraApi('http', @config.host,
+            @config.port, @config.user, @config.password, '2')
         @response = null
         @error = null
         @pp = new PrettyPrinter
@@ -48,7 +49,8 @@ class JiraHelper
     # *  summary: details for the title of the issue
     # *  description: more detailed than summary
     # *  issue type: Id of the type (types are like bug, feature)
-    # *  project: this is the id of the project that you're assigning the issue # to
+    # *  project: this is the id of the project that you're assigning the issue
+    # to
     addIssue: (summary, description, issueType, project) ->
         newIssue =
             fields:
@@ -61,12 +63,14 @@ class JiraHelper
         @jira.addNewIssue newIssue, (error, response) =>
             if response?
                 @response = response if response?
-                console.log "Issue #{response.key} has been #{color("created", "green")}"
+                console.log "Issue #{response.key} has " +
+                    "been #{color("created", "green")}"
             else
                 # The error object is non-standard here from Jira, I'll parse
                 # it better later
                 @error = error if error?
-                console.log color("Error creating issue: #{JSON.stringify(error)}", "red")
+                console.log color("Error creating issue: " +
+                    "#{JSON.stringify(error)}", "red")
 
             process.exit()
 
@@ -112,9 +116,9 @@ class JiraHelper
                 process.exit()
 
     # ## Transition Issue ##
-    # 
+    #
     # Transitions an issue in Jira
-    # 
+    #
     # ### Takes ###
     #
     # *  issueNum: the Id of the issue (either the AB-123 or the 123456)
@@ -126,7 +130,8 @@ class JiraHelper
         @jira.transitionIssue issueNum, issueUpdate, (error, response) =>
             if response?
                 @response = response
-                console.log "Issue #{issueNum} was #{color("transitioned", "green")}"
+                console.log "Issue #{issueNum} " +
+                    "was #{color("transitioned", "green")}"
             else
                 @error = error if error?
                 console.log color("Error transitioning issue: #{error}", "red")
@@ -150,7 +155,8 @@ class JiraHelper
                     @pp.prettyPrintIssue issue, details
             else
                 @error = error if error?
-                console.log color("Error retreiving issues list: #{error}", "red")
+                console.log color("Error retreiving issues list: "
+                    + "#{error}", "red")
 
     # ## Get My Issues ##
     #
@@ -170,7 +176,7 @@ class JiraHelper
         return
 
     # ## List all Projects ##
-    # 
+    #
     # This lists all the projects viewable with your account
     getMyProjects: (callback)->
         @jira.listProjects (error, projectList) =>

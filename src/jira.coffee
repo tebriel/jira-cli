@@ -3,7 +3,7 @@
 # This client depends on you having a json file in your home directory
 # named '.jiraclirc.json' it must contain:
 #
-#     { 
+#     {
 #         "user": "USERNAME",
 #         "password":"PASSWORD",
 #         "host":"www.jira.com",
@@ -22,7 +22,7 @@ JiraHelper = require('./jira-cli').JiraHelper
 dutils = require('./data-utils')
 
 # ## Create Config File ##
-# 
+#
 # Creates a config file when one doesn't exist
 createConfigFile = (aConfigFile) ->
     console.log "No config file found, answer these questions to create one!"
@@ -38,7 +38,8 @@ createConfigFile = (aConfigFile) ->
                             port:port
                             project:project
 
-                        fs.writeFileSync aConfigFile, JSON.stringify(config), 'utf8'
+                        fs.writeFileSync aConfigFile,
+                            JSON.stringify(config), 'utf8'
                         console.log "File created and saved as #{aConfigFile}"
                         process.exit()
 
@@ -100,21 +101,22 @@ listProjects = ->
             jiraCli.pp.prettyPrintProject project
 
 # ## Get Project ##
-# 
+#
 # Here we ask the user for their project, giving them an option for the
 # default, ? for a list, or they can type in a number directly
 #
 # It calls itself if we list the projects, so that it can still be used to for
 # what it was called to do
 getProject = (callback, defaultProj)->
-    dutils.ask "Project (Enter for Default/? for list) [#{defaultProj}] ", /.*/, (project) ->
-        unless project is '?'
-            callback configFile.project
-            return
-        projects = jiraCli.getMyProjects (projects)=>
-            for project in projects
-                jiraCli.pp.prettyPrintProject project
-            getProject callback, defaultProj
+    dutils.ask "Project (Enter for Default/? for list) [#{defaultProj}] ",/.*/,
+        (project) ->
+            unless project is '?'
+                callback configFile.project
+                return
+            projects = jiraCli.getMyProjects (projects)=>
+                for project in projects
+                    jiraCli.pp.prettyPrintProject project
+                getProject callback, defaultProj
 
 # ## Add Item ##
 #
@@ -132,47 +134,47 @@ addItem = (project)->
                     
                 allowedTypes = [1..issueTypes.length]
                 dutils.ask "Type ", allowedTypes, (type)->
-                    jiraCli.addIssue summary, description, issueTypes[type - 1].id, project
-                , allowedTypes
+                    jiraCli.addIssue summary, description,
+                        issueTypes[type - 1].id, project, allowedTypes
 
 # ## Main entry point ##
 #
 # Parses the arguments and then calls a function above
 if require.main is module
     argv = (require 'optimist')
-        .options('f', {
+        .options('f',
             alias:'find'
             describe:'Finds the specified Jira ID'
-        }).options('a', {
+        ).options('a',
             alias:'add'
             describe:'Allows you to add a new Jira Task'
-        }).options('t', {
+        ).options('t',
             alias:'transition'
             describe:'Allows you to resolve a specific Jira ID'
-        }).options('l', {
+        ).options('l',
             alias:'list'
             describe:'Lists all your open issues'
-        }).options('c', {
+        ).options('c',
             alias:'list-all'
             describe:'Lists all your issues'
-        }).options('d', {
+        ).options('d',
             alias:'details'
             describe:'Shows extra details (currently only for list)'
-        }).options('p', {
+        ).options('p',
             alias:'projects'
             describe:'Lists all your viewable projects'
-        }).options('o', {
+        ).options('o',
             describe:'Limits list to only this project'
-        }).options('w', {
+        ).options('w',
             alias:'worklog'
             describe:'Adds work to your task'
-        }).options('s', {
+        ).options('s',
             alias:'search'
             describe:'Pass a jql string to jira'
-        }).options('h', {
+        ).options('h',
             alias:'help'
             describe:'Shows this help message'
-        }).usage('Usage:\n\tjira -f EG-143\n\tjira -r EG-143')
+        ).usage('Usage:\n\tjira -f EG-143\n\tjira -r EG-143')
         .boolean('d')
         .string('s')
         .string('f')

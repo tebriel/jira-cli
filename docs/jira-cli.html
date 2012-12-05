@@ -5,7 +5,8 @@
 that Jira expects them to come in. Basically a wrapper for node-jira-devel</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">JiraHelper</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h2>Constructor</h2>
 
 <p>Builds a new JiraCli with the config settings</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">constructor: </span><span class="nf">(@config)-&gt;</span>
-        <span class="vi">@jira = </span><span class="k">new</span> <span class="nx">JiraApi</span><span class="p">(</span><span class="s">&#39;http&#39;</span><span class="p">,</span> <span class="nx">@config</span><span class="p">.</span><span class="nx">host</span><span class="p">,</span> <span class="nx">@config</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span> <span class="nx">@config</span><span class="p">.</span><span class="nx">user</span><span class="p">,</span> <span class="nx">@config</span><span class="p">.</span><span class="nx">password</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">)</span>
+        <span class="vi">@jira = </span><span class="k">new</span> <span class="nx">JiraApi</span><span class="p">(</span><span class="s">&#39;http&#39;</span><span class="p">,</span> <span class="nx">@config</span><span class="p">.</span><span class="nx">host</span><span class="p">,</span>
+            <span class="nx">@config</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span> <span class="nx">@config</span><span class="p">.</span><span class="nx">user</span><span class="p">,</span> <span class="nx">@config</span><span class="p">.</span><span class="nx">password</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">)</span>
         <span class="vi">@response = </span><span class="kc">null</span>
         <span class="vi">@error = </span><span class="kc">null</span>
         <span class="vi">@pp = </span><span class="k">new</span> <span class="nx">PrettyPrinter</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h2>Get Issue</h2>
@@ -34,7 +35,8 @@ this can be either a key AB-123 or just the number 123456</p>             </td> 
 <li>summary: details for the title of the issue</li>
 <li>description: more detailed than summary</li>
 <li>issue type: Id of the type (types are like bug, feature)</li>
-<li>project: this is the id of the project that you're assigning the issue # to</li>
+<li>project: this is the id of the project that you're assigning the issue
+to</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">addIssue: </span><span class="nf">(summary, description, issueType, project) -&gt;</span>
         <span class="nv">newIssue =</span>
             <span class="nv">fields:</span>

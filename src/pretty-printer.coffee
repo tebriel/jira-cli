@@ -29,7 +29,7 @@ class PrettyPrinter
         process.stdout.write "\n"
 
     # ## Pretty Print Transition ##
-    # 
+    #
     # Show a transition with the ID in bold followed by the name
     prettyPrintTransition: (transition, index) ->
         process.stdout.write color(index, "white+bold")

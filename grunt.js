@@ -56,6 +56,15 @@ module.exports = function(grunt) {
             }
         }
     },
+    coffeelint: { 
+        app: ['src/*.coffee'],
+    },
+    coffeelintOptions: {
+        indentation: {
+            value: 4,
+            level: "error"
+        }
+    },
     docco: {
         app: {
             src: ['src/*.coffee']
@@ -65,13 +74,14 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'coffee jasmine_node concat');
-  grunt.registerTask('test', 'coffee jasmine_node');
-  grunt.registerTask('prepare', 'coffee jasmine_node docco bump concat');
-  grunt.registerTask('force', 'coffee jasmine_node docco concat');
+  grunt.registerTask('default', 'coffeelint coffee jasmine_node concat');
+  grunt.registerTask('test', 'coffeelint coffee jasmine_node');
+  grunt.registerTask('prepare', 'coffeelint coffee jasmine_node docco bump concat');
+  grunt.registerTask('force', 'coffeelint coffee jasmine_node docco concat');
 
   grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-jasmine-node');
   grunt.loadNpmTasks('grunt-docco');
   grunt.loadNpmTasks('grunt-bump');
+  grunt.loadNpmTasks('grunt-coffeelint');
 };
