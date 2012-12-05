@@ -195,6 +195,7 @@ if require.main is module
     if args.o?
         if args.o instanceof Array
             args.o = args.o.join ','
+        args.o = " AND project in (#{args.o})"
 
     if args.l
         jiraCli.getMyIssues true, args.d, args.o
@@ -202,6 +203,8 @@ if require.main is module
         jiraCli.getMyIssues false, args.d, args.o
     else if args.s
         return unless paramIsText args.s
+        if args.o?
+            args.s += args.o
         jiraCli.searchJira args.s, args.d
     else if args.p
         listProjects()

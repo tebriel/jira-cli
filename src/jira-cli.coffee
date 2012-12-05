@@ -164,9 +164,7 @@ class JiraHelper
         jql = "assignee = " + @config.user
         if open
             jql += ' AND status in (Open, "In Progress", Reopened)'
-        if projects?
-            jql += " AND project in (#{projects})"
-        console.log jql
+        jql += projects if projects?
 
         @searchJira jql, details
         return
