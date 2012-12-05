@@ -161,6 +161,8 @@ if require.main is module
         }).options('p', {
             alias:'projects'
             describe:'Lists all your viewable projects'
+        }).options('o', {
+            describe:'Limits list to only this project'
         }).options('w', {
             alias:'worklog'
             describe:'Adds work to your task'
@@ -191,9 +193,9 @@ if require.main is module
     jiraCli = new JiraHelper configFile
 
     if args.l
-        jiraCli.getMyIssues true, args.d
+        jiraCli.getMyIssues true, args.d, args.o
     else if args.c
-        jiraCli.getMyIssues false, args.d
+        jiraCli.getMyIssues false, args.d, args.o
     else if args.s
         return unless paramIsText args.s
         jiraCli.searchJira args.s, args.d
