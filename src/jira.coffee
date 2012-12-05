@@ -192,6 +192,10 @@ if require.main is module
     configFile = loadConfigFile(configFilePath)
     jiraCli = new JiraHelper configFile
 
+    if args.o?
+        if args.o instanceof Array
+            args.o = args.o.join ','
+
     if args.l
         jiraCli.getMyIssues true, args.d, args.o
     else if args.c

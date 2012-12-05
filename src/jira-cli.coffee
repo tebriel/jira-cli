@@ -165,9 +165,8 @@ class JiraHelper
         if open
             jql += ' AND status in (Open, "In Progress", Reopened)'
         if projects?
-            if projects instanceof Array
-                projects = projects.join ','
             jql += " AND project in (#{projects})"
+        console.log jql
 
         @searchJira jql, details
         return
