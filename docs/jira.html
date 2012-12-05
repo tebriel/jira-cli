@@ -124,6 +124,8 @@ choose from</p>             </td>             <td class="code">               <d
         <span class="p">}).</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;p&#39;</span><span class="p">,</span> <span class="p">{</span>
             <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;projects&#39;</span>
             <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Lists all your viewable projects&#39;</span>
+        <span class="p">}).</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;o&#39;</span><span class="p">,</span> <span class="p">{</span>
+            <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Limits list to only this project&#39;</span>
         <span class="p">}).</span><span class="nx">options</span><span class="p">(</span><span class="s">&#39;w&#39;</span><span class="p">,</span> <span class="p">{</span>
             <span class="nx">alias</span><span class="o">:</span><span class="s">&#39;worklog&#39;</span>
             <span class="nx">describe</span><span class="o">:</span><span class="s">&#39;Adds work to your task&#39;</span>
@@ -153,12 +155,19 @@ choose from</p>             </td>             <td class="code">               <d
     <span class="nv">configFile = </span><span class="nx">loadConfigFile</span><span class="p">(</span><span class="nx">configFilePath</span><span class="p">)</span>
     <span class="nv">jiraCli = </span><span class="k">new</span> <span class="nx">JiraHelper</span> <span class="nx">configFile</span>
 
+    <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">o</span><span class="o">?</span>
+        <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">o</span> <span class="k">instanceof</span> <span class="nb">Array</span>
+            <span class="nv">args.o = </span><span class="nx">args</span><span class="p">.</span><span class="nx">o</span><span class="p">.</span><span class="nx">join</span> <span class="s">&#39;,&#39;</span>
+        <span class="nv">args.o = </span><span class="s">&quot; AND project in (</span><span class="si">#{</span><span class="nx">args</span><span class="p">.</span><span class="nx">o</span><span class="si">}</span><span class="s">)&quot;</span>
+
     <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">l</span>
-        <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getMyIssues</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">d</span>
+        <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getMyIssues</span> <span class="kc">true</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">d</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">o</span>
     <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">c</span>
-        <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getMyIssues</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">d</span>
+        <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">getMyIssues</span> <span class="kc">false</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">d</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">o</span>
     <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">s</span>
         <span class="k">return</span> <span class="nx">unless</span> <span class="nx">paramIsText</span> <span class="nx">args</span><span class="p">.</span><span class="nx">s</span>
+        <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">o</span><span class="o">?</span>
+            <span class="nx">args</span><span class="p">.</span><span class="nx">s</span> <span class="o">+=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">o</span>
         <span class="nx">jiraCli</span><span class="p">.</span><span class="nx">searchJira</span> <span class="nx">args</span><span class="p">.</span><span class="nx">s</span><span class="p">,</span> <span class="nx">args</span><span class="p">.</span><span class="nx">d</span>
     <span class="k">else</span> <span class="k">if</span> <span class="nx">args</span><span class="p">.</span><span class="nx">p</span>
         <span class="nx">listProjects</span><span class="p">()</span>
