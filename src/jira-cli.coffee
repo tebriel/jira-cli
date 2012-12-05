@@ -142,7 +142,8 @@ class JiraHelper
     # *  searchQuery: a jql formatted search query string
     # shows all otherwise
     searchJira: (searchQuery, details)->
-        @jira.searchJira searchQuery, (error, issueList) =>
+        fields = ["summary", "status", "assignee"]
+        @jira.searchJira searchQuery, fields, (error, issueList) =>
             if issueList?
                 @myIssues = issueList
                 for issue in issueList.issues
@@ -160,14 +161,11 @@ class JiraHelper
     # *  open: `boolean` which indicates if only open items should be shown,
     # shows all otherwise
     getMyIssues: (open, details)->
-        @jira.getUsersIssues @config.user, open, (error, issueList) =>
-            if issueList?
-                @myIssues = issueList
-                for issue in issueList.issues
-                    @pp.prettyPrintIssue issue, details
-            else
-                @error = error if error?
-                console.log color("Error retreiving issues list: #{error}", "red")
+        jql = "assignee = " + @config.user
+        if open
+            jql += ' AND status in (Open, "In Progress", Reopened)'
+        @searchJira jql, details
+        return
 
     # ## List all Projects ##
     # 

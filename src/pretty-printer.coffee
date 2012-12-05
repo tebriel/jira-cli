@@ -8,6 +8,8 @@ class PrettyPrinter
         sumColor = "green"
         sumColor = "red" if +issue.fields.status.id in [5,6]
         process.stdout.write color(issue.key, sumColor + "+bold")
+        # I don't think this could happen, but maybe....
+        issue.fields.summary = "None" unless issue.fields.summary?
         process.stdout.write " - "
         process.stdout.write issue.fields.summary
         process.stdout.write "\n"
