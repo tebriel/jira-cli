@@ -1,0 +1,47 @@
+<!DOCTYPE html>  <html> <head>   <title>data-utils.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="data-utils.html">                 data-utils.coffee               </a>                                           <a class="source" href="jira-cli.html">                 jira-cli.coffee               </a>                                           <a class="source" href="jira.html">                 jira.coffee               </a>                                           <a class="source" href="pretty-printer.html">                 pretty-printer.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               data-utils.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <h2>Ask the user a question</h2>
+
+<p>This is great, stole it from <a href="http://st-on-it.blogspot.com/2011/05/how-to-read-user-input-with-nodejs.html">St. On It</a></p>
+
+<p>Re-formatted it to be in coffeescript</p>
+
+<h3>Takes</h3>
+
+<ul>
+<li>question: (text for the user)</li>
+<li>format: RegExp which determines if the input was valid</li>
+<li>callback: for when we have proper input</li>
+<li>range: integer array that specifies allowed input</li>
+</ul>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">ask = </span><span class="nf">(question, format, callback, range) -&gt;</span>
+    <span class="nv">stdin = </span><span class="nx">process</span><span class="p">.</span><span class="nx">stdin</span>
+    <span class="nv">stdout = </span><span class="nx">process</span><span class="p">.</span><span class="nx">stdout</span>
+ 
+    <span class="nx">stdin</span><span class="p">.</span><span class="nx">resume</span><span class="p">()</span>
+    <span class="nx">stdout</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">question</span> <span class="o">+</span> <span class="s">&quot;: &quot;</span><span class="p">)</span>
+ 
+    <span class="nx">stdin</span><span class="p">.</span><span class="nx">once</span> <span class="s">&#39;data&#39;</span><span class="p">,</span> <span class="nf">(data) -&gt;</span>
+        <span class="nv">data = </span><span class="nx">data</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">trim</span><span class="p">()</span>
+ 
+        <span class="k">if</span> <span class="nx">range</span><span class="o">?</span>
+            <span class="k">if</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="k">in</span> <span class="nx">range</span>
+                <span class="nx">callback</span> <span class="nx">data</span>
+                <span class="k">return</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="nx">format</span><span class="p">.</span><span class="nx">test</span> <span class="nx">data</span>
+            <span class="nx">callback</span> <span class="nx">data</span>
+            <span class="k">return</span>
+
+        <span class="nx">stdout</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="s">&quot;It should match: &quot;</span> <span class="o">+</span> <span class="nx">format</span> <span class="o">+</span> <span class="s">&quot;\n&quot;</span><span class="p">)</span>
+        <span class="nx">ask</span><span class="p">(</span><span class="nx">question</span><span class="p">,</span> <span class="nx">format</span><span class="p">,</span> <span class="nx">callback</span><span class="p">,</span> <span class="nx">range</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h2>Item Sorter</h2>
+
+<p>Function for JS .Sort() which sorts items by id in ascending order</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">itemSorter = </span><span class="nf">(a, b)-&gt;</span>
+    <span class="nv">first = </span><span class="nb">parseInt</span> <span class="nx">a</span><span class="p">.</span><span class="nx">id</span>
+    <span class="nv">second = </span><span class="nb">parseInt</span> <span class="nx">b</span><span class="p">.</span><span class="nx">id</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="nx">first</span> <span class="o">&lt;</span> <span class="nx">second</span>
+    <span class="k">return</span> <span class="mi">0</span> <span class="k">if</span> <span class="nx">first</span> <span class="o">is</span> <span class="nx">second</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="nx">first</span> <span class="o">&gt;</span> <span class="nx">second</span>
+
+<span class="nv">module.exports = </span><span class="p">{</span>
+    <span class="nx">ask</span>
+    <span class="nx">itemSorter</span>
+<span class="p">}</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
