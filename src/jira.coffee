@@ -87,7 +87,7 @@ transitionItem = (issueId) ->
 #
 # This will add a comment and time spent as a worklog item attached to the
 # issue
-addWorklog = (issuedId) ->
+addWorklog = (issueId) ->
     dutils.ask "Comment for worklog", /.+/, (comment)->
         dutils.ask "Time Spent (for worklog)", /.+/, (timeSpent)->
             jiraCli.addWorklog issueId, comment, timeSpent, true

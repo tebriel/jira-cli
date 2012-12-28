@@ -17,10 +17,11 @@ interface.
 *  Allows user to add a new ticket to different projects
 *  Transitions an issue (shows all available transition states)
 *  Adds a worklog to an issue
+*  Allow searching to be limited by project id
 
 ## TODO
 
-*  Allow searching to be limited by project id
+*  PROFIT?
 
 ## Documentation
 
@@ -39,6 +40,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+*  _0.2.7 Fixed typo that prevented -w from working_
 *  _0.2.6 Now takes -o to limit to specific project(s)_
 *  _0.2.5 Now normalizing event types and item types_
 *  _0.2.4 I did something here, don't remember_
