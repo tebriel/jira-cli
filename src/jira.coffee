@@ -135,7 +135,8 @@ addItem = (project)->
                 allowedTypes = [1..issueTypes.length]
                 dutils.ask "Type ", allowedTypes, (type)->
                     jiraCli.addIssue summary, description,
-                        issueTypes[type - 1].id, project, allowedTypes
+                        issueTypes[type - 1].id, project
+                , allowedTypes
 
 # ## Main entry point ##
 #
