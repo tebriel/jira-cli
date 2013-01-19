@@ -167,7 +167,7 @@ class JiraHelper
     # *  open: `boolean` which indicates if only open items should be shown,
     # shows all otherwise
     getMyIssues: (open, details, projects)->
-        jql = "assignee = '" + @config.user + "'"
+        jql = "assignee = '#{@config.user}'"
         if open
             jql += ' AND status in (Open, "In Progress", Reopened)'
         jql += projects if projects?
