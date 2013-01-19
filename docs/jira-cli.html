@@ -13,7 +13,7 @@ that Jira expects them to come in. Basically a wrapper for node-jira-devel</p>  
 
 <p>Searches Jira for the issue number requested
 this can be either a key AB-123 or just the number 123456</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">getIssue: </span><span class="nf">(issueNum, details)-&gt;</span>
-        <span class="nx">@jira</span><span class="p">.</span><span class="nx">findIssue</span> <span class="nx">issueNum</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span>
+        <span class="nx">@jira</span><span class="p">.</span><span class="nx">findIssue</span> <span class="nx">issueNum</span><span class="p">,</span> <span class="nf">(error, response) =&gt;</span>
             <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
                 <span class="vi">@response = </span><span class="nx">response</span>
                 <span class="nx">@pp</span><span class="p">.</span><span class="nx">prettyPrintIssue</span> <span class="nx">response</span><span class="p">,</span> <span class="nx">details</span>
@@ -22,7 +22,7 @@ this can be either a key AB-123 or just the number 123456</p>             </td> 
                 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="s">&quot;Error finding issue: </span><span class="si">#{</span><span class="nx">error</span><span class="si">}</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h2>Get Issue Types</h2>
 
 <p>Gets a list of all the available issue types</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">getIssueTypes: </span><span class="nf">(callback)-&gt;</span>
-        <span class="nx">@jira</span><span class="p">.</span><span class="nx">listIssueTypes</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span>
+        <span class="nx">@jira</span><span class="p">.</span><span class="nx">listIssueTypes</span> <span class="nf">(error, response) =&gt;</span>
             <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
                 <span class="nx">callback</span> <span class="nx">response</span>
             <span class="k">else</span>
@@ -46,7 +46,7 @@ to</li>
                 <span class="nv">assignee: </span><span class="p">{</span> <span class="nx">name</span><span class="o">:</span><span class="nx">@config</span><span class="p">.</span><span class="nx">user</span> <span class="p">}</span>
                 <span class="nv">description: </span><span class="nx">description</span>
 
-        <span class="nx">@jira</span><span class="p">.</span><span class="nx">addNewIssue</span> <span class="nx">newIssue</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span>
+        <span class="nx">@jira</span><span class="p">.</span><span class="nx">addNewIssue</span> <span class="nx">newIssue</span><span class="p">,</span> <span class="nf">(error, response) =&gt;</span>
             <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
                 <span class="vi">@response = </span><span class="nx">response</span> <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
                 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Issue </span><span class="si">#{</span><span class="nx">response</span><span class="p">.</span><span class="nx">key</span><span class="si">}</span><span class="s"> has &quot;</span> <span class="o">+</span>
@@ -59,7 +59,7 @@ it better later</p>             </td>             <td class="code">             
             <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <h2>Delete an Issue</h2>
 
 <p>Deletes an issue (if you have permissions) from Jira. I haven't tested
-this successfully because I don't have permissions.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">deleteIssue: </span><span class="nf">(issueNum)-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Don't have permissions currently</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">@jira</span><span class="p">.</span><span class="nx">deleteIssue</span> <span class="nx">issueNum</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span>
+this successfully because I don't have permissions.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">deleteIssue: </span><span class="nf">(issueNum)-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Don't have permissions currently</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nx">@jira</span><span class="p">.</span><span class="nx">deleteIssue</span> <span class="nx">issueNum</span><span class="p">,</span> <span class="nf">(error, response) =&gt;</span>
             <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
                 <span class="vi">@response = </span><span class="nx">response</span>
                 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Issue </span><span class="si">#{</span><span class="nx">issueNum</span><span class="si">}</span><span class="s"> was </span><span class="si">#{</span><span class="nx">color</span><span class="p">(</span><span class="s">&quot;deleted&quot;</span><span class="p">,</span> <span class="s">&quot;green&quot;</span><span class="p">)</span><span class="si">}</span><span class="s">&quot;</span>
@@ -71,7 +71,7 @@ this successfully because I don't have permissions.</p>             </td>       
         <span class="nv">worklog =</span>
             <span class="nx">comment</span><span class="o">:</span><span class="nx">comment</span>
             <span class="nx">timeSpent</span><span class="o">:</span><span class="nx">timeSpent</span>
-        <span class="nx">@jira</span><span class="p">.</span><span class="nx">addWorklog</span> <span class="nx">issueId</span><span class="p">,</span> <span class="nx">worklog</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span><span class="o">=&gt;</span>
+        <span class="nx">@jira</span><span class="p">.</span><span class="nx">addWorklog</span> <span class="nx">issueId</span><span class="p">,</span> <span class="nx">worklog</span><span class="p">,</span> <span class="nf">(error, response)=&gt;</span>
             <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
                 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Worklog was </span><span class="si">#{</span><span class="nx">color</span><span class="p">(</span><span class="s">&quot;added&quot;</span><span class="p">,</span> <span class="s">&quot;green&quot;</span><span class="p">)</span><span class="si">}</span><span class="s">&quot;</span>
             <span class="k">else</span>
@@ -80,7 +80,7 @@ this successfully because I don't have permissions.</p>             </td>       
             <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span> <span class="k">if</span> <span class="nx">exit</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <h2>List Transitions</h2>
 
 <p>List the transitions available for an issue</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">listTransitions: </span><span class="nf">(issueNum, callback) -&gt;</span>
-        <span class="nx">@jira</span><span class="p">.</span><span class="nx">listTransitions</span> <span class="nx">issueNum</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">transitions</span><span class="p">)</span><span class="o">=&gt;</span>
+        <span class="nx">@jira</span><span class="p">.</span><span class="nx">listTransitions</span> <span class="nx">issueNum</span><span class="p">,</span> <span class="nf">(error, transitions)=&gt;</span>
             <span class="k">if</span> <span class="nx">transitions</span><span class="o">?</span>
                 <span class="nx">callback</span> <span class="nx">transitions</span>
             <span class="k">else</span>
@@ -98,7 +98,7 @@ this successfully because I don't have permissions.</p>             </td>       
         <span class="nv">issueUpdate =</span>
             <span class="nv">transition:</span>
                 <span class="nx">id</span><span class="o">:</span><span class="nx">transitionNum</span>
-        <span class="nx">@jira</span><span class="p">.</span><span class="nx">transitionIssue</span> <span class="nx">issueNum</span><span class="p">,</span> <span class="nx">issueUpdate</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="o">=&gt;</span>
+        <span class="nx">@jira</span><span class="p">.</span><span class="nx">transitionIssue</span> <span class="nx">issueNum</span><span class="p">,</span> <span class="nx">issueUpdate</span><span class="p">,</span> <span class="nf">(error, response) =&gt;</span>
             <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
                 <span class="vi">@response = </span><span class="nx">response</span>
                 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Issue </span><span class="si">#{</span><span class="nx">issueNum</span><span class="si">}</span><span class="s"> &quot;</span> <span class="o">+</span>
@@ -118,7 +118,7 @@ this successfully because I don't have permissions.</p>             </td>       
 shows all otherwise</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">searchJira: </span><span class="nf">(searchQuery, details)-&gt;</span>
         <span class="nv">fields = </span><span class="p">[</span><span class="s">&quot;summary&quot;</span><span class="p">,</span> <span class="s">&quot;status&quot;</span><span class="p">,</span> <span class="s">&quot;assignee&quot;</span><span class="p">]</span>
-        <span class="nx">@jira</span><span class="p">.</span><span class="nx">searchJira</span> <span class="nx">searchQuery</span><span class="p">,</span> <span class="nx">fields</span><span class="p">,</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">issueList</span><span class="p">)</span> <span class="o">=&gt;</span>
+        <span class="nx">@jira</span><span class="p">.</span><span class="nx">searchJira</span> <span class="nx">searchQuery</span><span class="p">,</span> <span class="nx">fields</span><span class="p">,</span> <span class="nf">(error, issueList) =&gt;</span>
             <span class="k">if</span> <span class="nx">issueList</span><span class="o">?</span>
                 <span class="vi">@myIssues = </span><span class="nx">issueList</span>
                 <span class="k">for</span> <span class="nx">issue</span> <span class="k">in</span> <span class="nx">issueList</span><span class="p">.</span><span class="nx">issues</span>
@@ -136,7 +136,7 @@ shows all otherwise</li>
 <li>open: <code>boolean</code> which indicates if only open items should be shown,
 shows all otherwise</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">getMyIssues: </span><span class="nf">(open, details, projects)-&gt;</span>
-        <span class="nv">jql = </span><span class="s">&quot;assignee = &quot;</span> <span class="o">+</span> <span class="nx">@config</span><span class="p">.</span><span class="nx">user</span>
+        <span class="nv">jql = </span><span class="s">&quot;assignee = &#39;</span><span class="si">#{</span><span class="nx">@config</span><span class="p">.</span><span class="nx">user</span><span class="si">}</span><span class="s">&#39;&quot;</span>
         <span class="k">if</span> <span class="nx">open</span>
             <span class="nx">jql</span> <span class="o">+=</span> <span class="s">&#39; AND status in (Open, &quot;In Progress&quot;, Reopened)&#39;</span>
         <span class="nx">jql</span> <span class="o">+=</span> <span class="nx">projects</span> <span class="k">if</span> <span class="nx">projects</span><span class="o">?</span>
@@ -145,7 +145,7 @@ shows all otherwise</li>
         <span class="k">return</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <h2>List all Projects</h2>
 
 <p>This lists all the projects viewable with your account</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">getMyProjects: </span><span class="nf">(callback)-&gt;</span>
-        <span class="nx">@jira</span><span class="p">.</span><span class="nx">listProjects</span> <span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">projectList</span><span class="p">)</span> <span class="o">=&gt;</span>
+        <span class="nx">@jira</span><span class="p">.</span><span class="nx">listProjects</span> <span class="nf">(error, projectList) =&gt;</span>
             <span class="k">if</span> <span class="nx">projectList</span><span class="o">?</span>
                 <span class="nx">callback</span> <span class="nx">projectList</span>
             <span class="k">else</span>
