@@ -76,7 +76,7 @@ module.exports = function(grunt) {
   // Default task.
   grunt.registerTask('default', 'coffeelint coffee jasmine_node concat');
   grunt.registerTask('test', 'coffeelint coffee jasmine_node');
-  grunt.registerTask('prepare', 'coffeelint coffee jasmine_node docco bump concat');
+  grunt.registerTask('prepare', 'coffeelint coffee jasmine_node docco concat bump');
   grunt.registerTask('force', 'coffeelint coffee jasmine_node docco concat');
 
   grunt.loadNpmTasks('grunt-contrib-coffee');
