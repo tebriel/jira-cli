@@ -4,6 +4,15 @@ color = require('ansi-color').set
 PrettyPrinter = require('./pretty-printer').PrettyPrinter
 JiraApi = require('jira').JiraApi
 
+
+class Logger
+    error: (text) ->
+        @log text, "red"
+    log: (text, color) ->
+        unless color?
+            color = 'white'
+        console.log color(text, color)
+
 # ## JiraHelper ##
 #
 # This does the fancy talking to JiraApi for us. It formats the objects the way
@@ -18,6 +27,10 @@ class JiraHelper
         @response = null
         @error = null
         @pp = new PrettyPrinter
+        @log = new Logger
+
+    dieWithFire: ->
+        process.exit()
 
     # ## Get Issue ##
     #
@@ -30,7 +43,7 @@ class JiraHelper
                 @pp.prettyPrintIssue response, details
             else
                 @error = error if error?
-                console.log color("Error finding issue: #{error}", "red")
+                @log.error "Error finding issue: #{error}"
 
     # ## Get Issue Types ##
     #
@@ -40,8 +53,16 @@ class JiraHelper
             if response?
                 callback response
             else
-                console.log color("Error listing issueTypes: #{error}", "red")
-                process.exit()
+                @log.error "Error listing issueTypes: #{error}"
+                @dieWithFire()
+
+    createIssueObject: (project, summary, issueType, description) ->
+        fields:
+            project: { id:project }
+            summary: summary
+            issuetype: { id:issueType }
+            assignee: { name:@config.user }
+            description: description
 
     # ## Add Issue ##
     #
@@ -52,27 +73,20 @@ class JiraHelper
     # *  project: this is the id of the project that you're assigning the issue
     # to
     addIssue: (summary, description, issueType, project) ->
-        newIssue =
-            fields:
-                project: { id:project }
-                summary: summary
-                issuetype: { id:issueType }
-                assignee: { name:@config.user }
-                description: description
+        newIssue = @createIssueObject project, summary, issueType, description
 
         @jira.addNewIssue newIssue, (error, response) =>
             if response?
                 @response = response if response?
-                console.log "Issue #{response.key} has " +
+                @log.log "Issue #{response.key} has " +
                     "been #{color("created", "green")}"
             else
                 # The error object is non-standard here from Jira, I'll parse
                 # it better later
                 @error = error if error?
-                console.log color("Error creating issue: " +
-                    "#{JSON.stringify(error)}", "red")
+                @log.error "Error creating issue: #{JSON.stringify(error)}"
 
-            process.exit()
+        @dieWithFire()
 
     # ## Delete an Issue ##
     #
@@ -83,10 +97,10 @@ class JiraHelper
         @jira.deleteIssue issueNum, (error, response) =>
             if response?
                 @response = response
-                console.log "Issue #{issueNum} was #{color("deleted", "green")}"
+                @log.log "Issue #{issueNum} was #{color("deleted", "green")}"
             else
                 @error = error if error?
-                console.log color("Error deleting issue: #{error}", "red")
+                @log.error "Error deleting issue: #{error}"
 
     # ## Add Worklog Item ##
     #
@@ -97,11 +111,11 @@ class JiraHelper
             timeSpent:timeSpent
         @jira.addWorklog issueId, worklog, (error, response)=>
             if response?
-                console.log "Worklog was #{color("added", "green")}"
+                @log.log "Worklog was #{color("added", "green")}"
             else
                 @error = error if error?
-                console.log color("Error adding worklog: #{error}", "red")
-            process.exit() if exit
+                @log.error "Error adding worklog: #{error}"
+            @dieWithFire() if exit
 
 
     # ## List Transitions ##
@@ -112,8 +126,8 @@ class JiraHelper
             if transitions?
                 callback transitions
             else
-                console.log color("Error getting transitions: #{error}", "red")
-                process.exit()
+                @log.error "Error getting transitions: #{error}"
+                @dieWithFire()
 
     # ## Transition Issue ##
     #
@@ -130,13 +144,13 @@ class JiraHelper
         @jira.transitionIssue issueNum, issueUpdate, (error, response) =>
             if response?
                 @response = response
-                console.log "Issue #{issueNum} " +
+                @log.log "Issue #{issueNum} " +
                     "was #{color("transitioned", "green")}"
             else
                 @error = error if error?
-                console.log color("Error transitioning issue: #{error}", "red")
+                @log.error "Error transitioning issue: #{error}"
 
-            process.exit()
+            @dieWithFire()
 
     # ## Search Jira ##
     #
@@ -155,8 +169,7 @@ class JiraHelper
                     @pp.prettyPrintIssue issue, details
             else
                 @error = error if error?
-                console.log color("Error retreiving issues list: "
-                    + "#{error}", "red")
+                @log.error "Error retreiving issues list: #{error}"
 
     # ## Get My Issues ##
     #
@@ -183,8 +196,8 @@ class JiraHelper
             if projectList?
                 callback projectList
             else
-                console.log color("Error listing projects: #{error}", "red")
-                process.exit()
+                @log.error "Error listing projects: #{error}"
+                @dieWithFire()
 
 
 module.exports = {

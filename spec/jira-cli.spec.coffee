@@ -1,78 +1,197 @@
 fs = require 'fs'
 path = require 'path'
+
+color = require('ansi-color').set
+
 jira = require '../src/jira-cli.coffee'
 
+# These seem to be a bit silly, gets me more familiar with spies though, so I
+# guess that's a good thing.
+
 describe "JiraCli", ->
-    jiraCli = null
-
     beforeEach ->
-        configFile = path.join process.env.HOME, '.jiraclirc.json'
-        unless fs.existsSync configFile
-            console.log "Get your crap together and get a config file"
-            console.log configFile
-            return
-        configFile = fs.readFileSync configFile, 'utf8'
-        configFile = JSON.parse configFile
-        jiraCli = new jira.JiraHelper configFile
+        config =
+            host: 'localhost'
+            port: 80
+            user: 'test'
+            password: 'test'
 
-    it "Gets an issue", ->
-        jiraCli.getIssue "EG-135"
+        @jiraCli = new jira.JiraHelper config
+        @cb = jasmine.createSpy 'callback'
+        spyOn @jiraCli.pp, 'prettyPrintIssue'
+        spyOn @jiraCli.log, 'error'
+        spyOn @jiraCli.log, 'log'
+        spyOn @jiraCli, 'dieWithFire'
 
-        waitsFor (->
-            jiraCli.response? or jiraCli.error?), "We should get a response", 3000
-        runs ->
-            expect(jiraCli.response).not.toBeNull()
-            expect(jiraCli.error).toBeNull()
+    it "Gets the requested issue", ->
+        spyOn @jiraCli.jira, 'findIssue'
+        @jiraCli.getIssue 1, false
+        expect(@jiraCli.jira.findIssue.mostRecentCall.args[0])
+            .toEqual 1
+        
+        @jiraCli.jira.findIssue.mostRecentCall.args[1] null, "response"
+        expect(@jiraCli.pp.prettyPrintIssue)
+            .toHaveBeenCalledWith "response", false
 
-    it "Gets my issues", ->
-        jiraCli.getMyIssues false
+        @jiraCli.jira.findIssue.mostRecentCall.args[1] "error"
+        expect(@jiraCli.log.error)
+            .toHaveBeenCalledWith "Error finding issue: error"
 
-        waitsFor (->
-            jiraCli.myIssues? or jiraCli.error?), "We should get a response", 3000
-        runs ->
-            expect(jiraCli.myIssues).not.toBeNull()
-            expect(jiraCli.myIssues.issues.length).toBeGreaterThan 0
-            expect(jiraCli.error).toBeNull()
+    it "Gets the issue types", ->
+        spyOn @jiraCli.jira, 'listIssueTypes'
+        @jiraCli.getIssueTypes @cb
+        
+        @jiraCli.jira.listIssueTypes.mostRecentCall.args[0] null, "response"
+        expect(@cb).toHaveBeenCalledWith "response"
 
-    it "Gets my OPEN issues", ->
-        jiraCli.getMyIssues true
+        @jiraCli.jira.listIssueTypes.mostRecentCall.args[0] "error"
+        expect(@jiraCli.log.error)
+            .toHaveBeenCalledWith "Error listing issueTypes: error"
+        expect(@jiraCli.dieWithFire).toHaveBeenCalled()
 
-        waitsFor (->
-            jiraCli.myIssues? or jiraCli.error?), "We should get a response", 3000
-        runs ->
-            expect(jiraCli.myIssues).not.toBeNull()
-            expect(jiraCli.myIssues.issues.length).toBeGreaterThan 0
-            expect(jiraCli.error).toBeNull()
+    it "Adds a new issue", ->
+        issue = @jiraCli.createIssueObject 'project', 'summary', 'issueType',
+            'description'
+        spyOn @jiraCli.jira, 'addNewIssue'
+        @jiraCli.addIssue 'summary', 'description', 'issueType', 'project'
+        expect(@jiraCli.jira.addNewIssue.mostRecentCall.args[0])
+            .toEqual issue
+        
+        @jiraCli.jira.addNewIssue.mostRecentCall.args[1] null,
+            key: 'response'
+        expect(@jiraCli.log.log)
+            .toHaveBeenCalledWith "Issue response has been
+ #{color('created', 'green')}"
 
+        @jiraCli.jira.addNewIssue.mostRecentCall.args[1] "error"
+        expect(@jiraCli.log.error)
+            .toHaveBeenCalledWith "Error creating issue: \"error\""
 
-    # This is also costly, maybe combine it with the add below?
-    #it "Resolves an Issue", ->
-    #    jiraCli.resolveIssue "EG-143"
+    it "Deletes an Issue", ->
+        spyOn @jiraCli.jira, 'deleteIssue'
+        @jiraCli.deleteIssue 1
 
-    #    waitsFor (->
-    #        jiraCli.response? or jiraCli.error?), "We should get a response", 3000
-    #    runs ->
-    #        expect(jiraCli.response).not.toBeNull()
-    #        console.log jiraCli.response
-    #        expect(jiraCli.error).toBeNull()
+        expect(@jiraCli.jira.deleteIssue.mostRecentCall.args[0])
+            .toEqual 1
 
-    # This is costly, you have to delete it from jira, because it really does
-    # add it in 
-    #it "Adds a new issue", ->
-    #    myIssue =
-    #        fields:
-    #            project: { key:'EG' }
-    #            summary: "Test Issue from Test Client"
-    #            issuetype: { id:2 }
-    #            assignee: { name:"cmoultrie" }
-    #            description: "this is a test"
+        @jiraCli.jira.deleteIssue.mostRecentCall.args[1] "error"
+        expect(@jiraCli.log.error)
+            .toHaveBeenCalledWith "Error deleting issue: error"
 
-    #    jiraCli.addIssue myIssue
+        @jiraCli.jira.deleteIssue.mostRecentCall.args[1] null, "success"
+        expect(@jiraCli.log.log)
+            .toHaveBeenCalledWith "Issue 1 was #{color('deleted', 'green')}"
 
-    #    waitsFor (->
-    #        jiraCli.response? or jiraCli.error?), "We should get a response", 3000
-    #    runs ->
-    #        console.log jiraCli.response
-    #        expect(jiraCli.response).not.toBeNull()
-    #        console.log jiraCli.response
-    #        expect(jiraCli.error).toBeNull()
+    it "Adds a worklog", ->
+        worklog =
+            comment: 'comment'
+            timeSpent: 'timeSpent'
+        spyOn @jiraCli.jira, 'addWorklog'
+        @jiraCli.addWorklog 1, 'comment', 'timeSpent', true
+
+        expect(@jiraCli.jira.addWorklog.mostRecentCall.args[0])
+            .toEqual 1
+
+        expect(@jiraCli.jira.addWorklog.mostRecentCall.args[1])
+            .toEqual worklog
+        @jiraCli.jira.addWorklog.mostRecentCall.args[2] null, "response"
+        expect(@jiraCli.log.log)
+            .toHaveBeenCalledWith "Worklog was #{color("added", "green")}"
+
+        @jiraCli.jira.addWorklog.mostRecentCall.args[2] "error"
+        expect(@jiraCli.log.error)
+            .toHaveBeenCalledWith "Error adding worklog: error"
+
+        expect(@jiraCli.dieWithFire).toHaveBeenCalled()
+
+    it "Adds a worklog, but doesn't quit", ->
+        worklog =
+            comment: 'comment'
+            timeSpent: 'timeSpent'
+        spyOn @jiraCli.jira, 'addWorklog'
+        @jiraCli.addWorklog 1, 'comment', 'timeSpent', false
+        @jiraCli.jira.addWorklog.mostRecentCall.args[2] null, "response"
+        expect(@jiraCli.dieWithFire).not.toHaveBeenCalled()
+
+    it "Lists transitions", ->
+        spyOn @jiraCli.jira, 'listTransitions'
+
+        @jiraCli.listTransitions 1, @cb
+        expect(@jiraCli.jira.listTransitions.mostRecentCall.args[0])
+            .toEqual 1
+
+        @jiraCli.jira.listTransitions.mostRecentCall.args[1] null, "transitions"
+        expect(@cb).toHaveBeenCalledWith "transitions"
+
+        @jiraCli.jira.listTransitions.mostRecentCall.args[1] "error"
+        expect(@jiraCli.log.error)
+            .toHaveBeenCalledWith "Error getting transitions: error"
+        expect(@jiraCli.dieWithFire).toHaveBeenCalled()
+
+    it "Transitions an Issue", ->
+        issueUpdate =
+            transition:
+                id: 'transition'
+        spyOn @jiraCli.jira, 'transitionIssue'
+        @jiraCli.transitionIssue 1, 'transition'
+        expect(@jiraCli.jira.transitionIssue.mostRecentCall.args[0])
+            .toEqual 1
+        expect(@jiraCli.jira.transitionIssue.mostRecentCall.args[1])
+            .toEqual issueUpdate
+        @jiraCli.jira.transitionIssue.mostRecentCall.args[2] null, "response"
+        expect(@jiraCli.log.log)
+            .toHaveBeenCalledWith "Issue 1 was #{color "transitioned", 'green'}"
+
+        @jiraCli.jira.transitionIssue.mostRecentCall.args[2] "error"
+        expect(@jiraCli.log.error)
+            .toHaveBeenCalledWith "Error transitioning issue: error"
+
+        expect(@jiraCli.dieWithFire).toHaveBeenCalled()
+
+    it "Searches Jira", ->
+        fields = ["summary", "status", "assignee"]
+        spyOn @jiraCli.jira, 'searchJira'
+
+        @jiraCli.searchJira 'query', true
+        expect(@jiraCli.jira.searchJira.mostRecentCall.args[0])
+            .toEqual 'query'
+
+        expect(@jiraCli.jira.searchJira.mostRecentCall.args[1])
+            .toEqual fields
+
+        @jiraCli.jira.searchJira.mostRecentCall.args[2] null, issues: [1]
+        expect(@jiraCli.pp.prettyPrintIssue).toHaveBeenCalledWith 1, true
+
+        @jiraCli.jira.searchJira.mostRecentCall.args[2] "error"
+        expect(@jiraCli.log.error)
+            .toHaveBeenCalledWith "Error retreiving issues list: error"
+
+    it "Gets the user's OPEN issues", ->
+        jql = "assignee = 'test' AND status in
+ (Open, \"In Progress\", Reopened)"
+        spyOn @jiraCli, 'searchJira'
+
+        @jiraCli.getMyIssues true, true
+
+        expect(@jiraCli.searchJira).toHaveBeenCalledWith jql, true
+
+    it "Gets ALL the user's issues", ->
+        jql = "assignee = 'test'"
+        spyOn @jiraCli, 'searchJira'
+
+        @jiraCli.getMyIssues false, true
+
+        expect(@jiraCli.searchJira).toHaveBeenCalledWith jql, true
+
+    it "Gets the user's projects", ->
+        spyOn @jiraCli.jira, 'listProjects'
+        @jiraCli.getMyProjects @cb
+
+        @jiraCli.jira.listProjects.mostRecentCall.args[0] null, "list"
+        expect(@cb).toHaveBeenCalledWith "list"
+
+        @jiraCli.jira.listProjects.mostRecentCall.args[0] "error"
+        expect(@jiraCli.log.error)
+            .toHaveBeenCalledWith "Error listing projects: error"
+
+        expect(@jiraCli.dieWithFire).toHaveBeenCalled()
