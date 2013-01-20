@@ -33,6 +33,11 @@ interface.
 
 `jira -f AB-123`
 
+## Testing ##
+
+Using jasmine-node with grunt currently. Tests are a bit silly, but they helped
+me learn jasmine spies. So that's good.
+
 ## Contributing
 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt](https://github.com/gruntjs/grunt).
