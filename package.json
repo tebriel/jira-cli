@@ -1,7 +1,7 @@
 {
   "name": "jira-cli",
   "description": "Command line interface for Jira",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "homepage": "https://tebriel.github.com/jira-cli",
   "author": {
     "name": "Chris Moultrie",
