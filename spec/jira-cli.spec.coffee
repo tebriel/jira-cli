@@ -26,8 +26,8 @@ describe "JiraCli", ->
     it "Gets the requested issue", ->
         spyOn @jiraCli.jira, 'findIssue'
         @jiraCli.getIssue 1, false
-        expect(@jiraCli.jira.findIssue.mostRecentCall.args[0])
-            .toEqual 1
+        expect(@jiraCli.jira.findIssue)
+            .toHaveBeenCalledWith 1, jasmine.any Function
         
         @jiraCli.jira.findIssue.mostRecentCall.args[1] null, "response"
         expect(@jiraCli.pp.prettyPrintIssue)
@@ -54,8 +54,8 @@ describe "JiraCli", ->
             'description'
         spyOn @jiraCli.jira, 'addNewIssue'
         @jiraCli.addIssue 'summary', 'description', 'issueType', 'project'
-        expect(@jiraCli.jira.addNewIssue.mostRecentCall.args[0])
-            .toEqual issue
+        expect(@jiraCli.jira.addNewIssue)
+            .toHaveBeenCalledWith issue, jasmine.any Function
         
         @jiraCli.jira.addNewIssue.mostRecentCall.args[1] null,
             key: 'response'
@@ -71,8 +71,8 @@ describe "JiraCli", ->
         spyOn @jiraCli.jira, 'deleteIssue'
         @jiraCli.deleteIssue 1
 
-        expect(@jiraCli.jira.deleteIssue.mostRecentCall.args[0])
-            .toEqual 1
+        expect(@jiraCli.jira.deleteIssue)
+            .toHaveBeenCalledWith 1, jasmine.any Function
 
         @jiraCli.jira.deleteIssue.mostRecentCall.args[1] "error"
         expect(@jiraCli.log.error)
@@ -89,11 +89,9 @@ describe "JiraCli", ->
         spyOn @jiraCli.jira, 'addWorklog'
         @jiraCli.addWorklog 1, 'comment', 'timeSpent', true
 
-        expect(@jiraCli.jira.addWorklog.mostRecentCall.args[0])
-            .toEqual 1
+        expect(@jiraCli.jira.addWorklog)
+            .toHaveBeenCalledWith 1, worklog, jasmine.any Function
 
-        expect(@jiraCli.jira.addWorklog.mostRecentCall.args[1])
-            .toEqual worklog
         @jiraCli.jira.addWorklog.mostRecentCall.args[2] null, "response"
         expect(@jiraCli.log.log)
             .toHaveBeenCalledWith "Worklog was #{color("added", "green")}"
@@ -105,9 +103,6 @@ describe "JiraCli", ->
         expect(@jiraCli.dieWithFire).toHaveBeenCalled()
 
     it "Adds a worklog, but doesn't quit", ->
-        worklog =
-            comment: 'comment'
-            timeSpent: 'timeSpent'
         spyOn @jiraCli.jira, 'addWorklog'
         @jiraCli.addWorklog 1, 'comment', 'timeSpent', false
         @jiraCli.jira.addWorklog.mostRecentCall.args[2] null, "response"
@@ -117,8 +112,8 @@ describe "JiraCli", ->
         spyOn @jiraCli.jira, 'listTransitions'
 
         @jiraCli.listTransitions 1, @cb
-        expect(@jiraCli.jira.listTransitions.mostRecentCall.args[0])
-            .toEqual 1
+        expect(@jiraCli.jira.listTransitions)
+            .toHaveBeenCalledWith 1, jasmine.any Function
 
         @jiraCli.jira.listTransitions.mostRecentCall.args[1] null, "transitions"
         expect(@cb).toHaveBeenCalledWith "transitions"
@@ -134,10 +129,9 @@ describe "JiraCli", ->
                 id: 'transition'
         spyOn @jiraCli.jira, 'transitionIssue'
         @jiraCli.transitionIssue 1, 'transition'
-        expect(@jiraCli.jira.transitionIssue.mostRecentCall.args[0])
-            .toEqual 1
-        expect(@jiraCli.jira.transitionIssue.mostRecentCall.args[1])
-            .toEqual issueUpdate
+        expect(@jiraCli.jira.transitionIssue)
+            .toHaveBeenCalledWith 1, issueUpdate, jasmine.any Function
+
         @jiraCli.jira.transitionIssue.mostRecentCall.args[2] null, "response"
         expect(@jiraCli.log.log)
             .toHaveBeenCalledWith "Issue 1 was #{color "transitioned", 'green'}"
@@ -153,8 +147,8 @@ describe "JiraCli", ->
         spyOn @jiraCli.jira, 'searchJira'
 
         @jiraCli.searchJira 'query', true
-        expect(@jiraCli.jira.searchJira.mostRecentCall.args[0])
-            .toEqual 'query'
+        expect(@jiraCli.jira.searchJira)
+            .toHaveBeenCalledWith 'query', fields, jasmine.any Function
 
         expect(@jiraCli.jira.searchJira.mostRecentCall.args[1])
             .toEqual fields
