@@ -1,7 +1,7 @@
 {
   "name": "jira-cli",
   "description": "Command line interface for Jira",
-  "version": "0.2.10",
+  "version": "0.3.1",
   "homepage": "https://tebriel.github.com/jira-cli",
   "author": {
     "name": "Chris Moultrie",
@@ -39,7 +39,7 @@
   "devDependencies": {
     "grunt": "~0.3.17",
     "grunt-contrib-coffee": "~0.3.2",
-    "grunt-jasmine-node": "0.0.5",
+    "grunt-jasmine-node": "0.0.6",
     "docco": "~0.4.0",
     "grunt-docco": "~0.1.2",
     "grunt-bump": "0.0.1",

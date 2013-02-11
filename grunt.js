@@ -6,14 +6,7 @@ module.exports = function(grunt) {
     pkg: '<json:package.json>',
     jasmine_node: {
         projectRoot: "./spec",
-        forceExit: false,
         extensions: 'coffee',
-        jUnit: {
-            report: false,
-            savePath : "./build/reports/jasmine/",
-            useDotNotation: true,
-            consolidate: true
-        }
     },
     meta: {
         banner: '#!/usr/bin/env node'

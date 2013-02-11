@@ -8,10 +8,10 @@ JiraApi = require('jira').JiraApi
 class Logger
     error: (text) ->
         @log text, "red"
-    log: (text, color) ->
-        unless color?
-            color = 'white'
-        console.log color(text, color)
+    log: (text, textColor) ->
+        unless textColor?
+            textColor = 'white'
+        console.log color(text, textColor)
 
 # ## JiraHelper ##
 #

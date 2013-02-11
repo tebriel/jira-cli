@@ -48,6 +48,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+*  _0.3.1 Fixed some bugs_
 *  _0.3.0 Updated version of jira_
 *  _0.2.9 Fixed an issue where special characters were in the username_
 *  _0.2.8 Fixed issue with create that would prevent you from creating_

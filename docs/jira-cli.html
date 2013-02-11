@@ -5,10 +5,10 @@
 <span class="k">class</span> <span class="nx">Logger</span>
     <span class="nv">error: </span><span class="nf">(text) -&gt;</span>
         <span class="nx">@log</span> <span class="nx">text</span><span class="p">,</span> <span class="s">&quot;red&quot;</span>
-    <span class="nv">log: </span><span class="nf">(text, color) -&gt;</span>
-        <span class="nx">unless</span> <span class="nx">color</span><span class="o">?</span>
-            <span class="nv">color = </span><span class="s">&#39;white&#39;</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="nx">text</span><span class="p">,</span> <span class="nx">color</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h2>JiraHelper</h2>
+    <span class="nv">log: </span><span class="nf">(text, textColor) -&gt;</span>
+        <span class="nx">unless</span> <span class="nx">textColor</span><span class="o">?</span>
+            <span class="nv">textColor = </span><span class="s">&#39;white&#39;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">color</span><span class="p">(</span><span class="nx">text</span><span class="p">,</span> <span class="nx">textColor</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h2>JiraHelper</h2>
 
 <p>This does the fancy talking to JiraApi for us. It formats the objects the way
 that Jira expects them to come in. Basically a wrapper for node-jira-devel</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">JiraHelper</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h2>Constructor</h2>
