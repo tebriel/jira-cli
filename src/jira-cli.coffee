@@ -22,8 +22,14 @@ class JiraHelper
     #
     # Builds a new JiraCli with the config settings
     constructor: (@config)->
-        @jira = new JiraApi('http', @config.host,
-            @config.port, @config.user, @config.password, '2')
+        unless @config.strictSSL?
+            @config.strictSSL = true
+        unless @config.protocol?
+            @config.protocol = 'http:'
+
+        @jira = new JiraApi(@config.protocol, @config.host,
+            @config.port, @config.user, @config.password, '2',
+            false, @config.strictSSL)
         @response = null
         @error = null
         @pp = new PrettyPrinter
@@ -180,7 +186,7 @@ class JiraHelper
     # *  open: `boolean` which indicates if only open items should be shown,
     # shows all otherwise
     getMyIssues: (open, details, projects)->
-        jql = "assignee = '#{@config.user}'"
+        jql = "assignee = \"#{@config.user}\""
         if open
             jql += ' AND status in (Open, "In Progress", Reopened)'
         jql += projects if projects?

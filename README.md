@@ -26,15 +26,20 @@ interface.
 *  PROFIT?
 *  MOAR testing
 
-## Documentation
+## Documentation ##
 
 [GitHub Documentation](http://tebriel.github.com/jira-cli/)
 
-## Examples
+## Examples ##
 
 `jira -l`
 
 `jira -f AB-123`
+
+## Notes ##
+
+If you use `https:` for jira, add `"protocol": "https:"` to your .jiraclirc.json
+If your ssl certs are also self-signed add: `"strictSSL": false` to your .jiraclirc.json
 
 ## Testing ##
 
@@ -48,6 +53,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+*  _0.4.0 Now able to ignore self-signed SSL Certs and specify protocol_
 *  _0.3.1 Fixed some bugs_
 *  _0.3.0 Updated version of jira_
 *  _0.2.9 Fixed an issue where special characters were in the username_
