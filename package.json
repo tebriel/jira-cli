@@ -28,7 +28,7 @@
     "node": ">= 0.6.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "node node_modules/jasmine-node/lib/jasmine-node/cli.js --verbose --coffee spec/"
   },
   "dependencies": {
     "jira": ">= 0.0.5",
@@ -43,7 +43,8 @@
     "docco": "~0.4.0",
     "grunt-docco": "~0.1.2",
     "grunt-bump": "0.0.1",
-    "grunt-coffeelint": "0.0.3"
+    "grunt-coffeelint": "0.0.3",
+    "jasmine-node": "~1.7.0"
   },
   "keywords": [
     "jira",
