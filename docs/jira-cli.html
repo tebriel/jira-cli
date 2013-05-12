@@ -66,10 +66,8 @@ this can be either a key AB-123 or just the number 123456</p>             </td> 
 to</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">addIssue: </span><span class="nf">(summary, description, issueType, project) -&gt;</span>
         <span class="nv">newIssue = </span><span class="nx">@createIssueObject</span> <span class="nx">project</span><span class="p">,</span> <span class="nx">summary</span><span class="p">,</span> <span class="nx">issueType</span><span class="p">,</span> <span class="nx">description</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;issuetype:&quot;</span><span class="p">,</span> <span class="nx">issueType</span>
 
         <span class="nx">@jira</span><span class="p">.</span><span class="nx">addNewIssue</span> <span class="nx">newIssue</span><span class="p">,</span> <span class="nf">(error, response) =&gt;</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;callback returned&quot;</span>
             <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
                 <span class="vi">@response = </span><span class="nx">response</span> <span class="k">if</span> <span class="nx">response</span><span class="o">?</span>
                 <span class="nx">@log</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Issue </span><span class="si">#{</span><span class="nx">response</span><span class="p">.</span><span class="nx">key</span><span class="si">}</span><span class="s"> has &quot;</span> <span class="o">+</span>

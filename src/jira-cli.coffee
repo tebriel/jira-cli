@@ -80,10 +80,8 @@ class JiraHelper
     # to
     addIssue: (summary, description, issueType, project) ->
         newIssue = @createIssueObject project, summary, issueType, description
-        console.log "issuetype:", issueType
 
         @jira.addNewIssue newIssue, (error, response) =>
-            console.log "callback returned"
             if response?
                 @response = response if response?
                 @log.log "Issue #{response.key} has " +
