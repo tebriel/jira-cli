@@ -128,15 +128,16 @@ addItem = (project)->
     dutils.ask "Summary", /.+/, (summary)->
         dutils.ask "Description", /.+/, (description)->
             jiraCli.getIssueTypes (issueTypes)->
+                console.log issueTypes
                 issueTypes.sort dutils.itemSorter
                 for type, index in issueTypes
                     jiraCli.pp.prettyPrintIssueTypes type, index + 1
                     
                 allowedTypes = [1..issueTypes.length]
-                dutils.ask "Type ", allowedTypes, (type)->
+                addIssueCallback = (type)->
                     jiraCli.addIssue summary, description,
                         issueTypes[type - 1].id, project
-                , allowedTypes
+                dutils.ask "Type ", allowedTypes, addIssueCallback, allowedTypes
 
 # ## Main entry point ##
 #

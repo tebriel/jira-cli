@@ -53,6 +53,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+*  _0.4.1 Accidentally quitting before callback was finished_
 *  _0.4.0 Now able to ignore self-signed SSL Certs and specify protocol_
 *  _0.3.1 Fixed some bugs_
 *  _0.3.0 Updated version of jira_
