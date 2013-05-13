@@ -28,7 +28,7 @@
     "node": ">= 0.6.0"
   },
   "scripts": {
-    "test": "node node_modules/jasmine-node/lib/jasmine-node/cli.js --verbose --coffee spec/"
+    "test": "node -e 'require(\"grunt\").cli()'"
   },
   "dependencies": {
     "jira": ">= 0.0.5",
