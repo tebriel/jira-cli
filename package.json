@@ -36,19 +36,19 @@
     "ansi-color": "~0.2.1",
     "wordwrap": "0.0.2"
   },
-  "devDependencies": {
-    "grunt": "~0.3.17",
-    "grunt-contrib-coffee": "~0.3.2",
-    "grunt-jasmine-node": "0.0.6",
-    "docco": "~0.4.0",
-    "grunt-docco": "~0.1.2",
-    "grunt-bump": "0.0.1",
-    "grunt-coffeelint": "0.0.3"
-  },
   "keywords": [
     "jira",
     "awesomeness",
     "win",
     "whisky"
-  ]
+  ],
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-bump": "0.0.2",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-coffeelint": "0.0.6",
+    "grunt-jasmine-node": "~0.1.0",
+    "grunt-docco": "~0.2.0",
+    "grunt-contrib-concat": "~0.3.0"
+  }
 }
