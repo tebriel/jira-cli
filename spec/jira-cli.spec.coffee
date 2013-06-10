@@ -161,8 +161,7 @@ describe "JiraCli", ->
             .toHaveBeenCalledWith "Error retreiving issues list: error"
 
     it "Gets the user's OPEN issues", ->
-        jql = "assignee = \"test\" AND status in
- (Open, \"In Progress\", Reopened)"
+        jql = "assignee = \"test\" AND resolution = unresolved"
         spyOn @jiraCli, 'searchJira'
 
         @jiraCli.getMyIssues true, true
