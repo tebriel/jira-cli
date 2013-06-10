@@ -188,7 +188,7 @@ class JiraHelper
     getMyIssues: (open, details, projects)->
         jql = "assignee = \"#{@config.user}\""
         if open
-            jql += ' AND status in (Open, "In Progress", Reopened)'
+            jql += ' AND resolution = unresolved'
         jql += projects if projects?
 
         @searchJira jql, details
