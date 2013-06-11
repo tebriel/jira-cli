@@ -157,7 +157,7 @@ shows all otherwise</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">getMyIssues: </span><span class="nf">(open, details, projects)-&gt;</span>
         <span class="nv">jql = </span><span class="s">&quot;assignee = \&quot;</span><span class="si">#{</span><span class="nx">@config</span><span class="p">.</span><span class="nx">user</span><span class="si">}</span><span class="s">\&quot;&quot;</span>
         <span class="k">if</span> <span class="nx">open</span>
-            <span class="nx">jql</span> <span class="o">+=</span> <span class="s">&#39; AND status in (Open, &quot;In Progress&quot;, Reopened)&#39;</span>
+            <span class="nx">jql</span> <span class="o">+=</span> <span class="s">&#39; AND resolution = unresolved&#39;</span>
         <span class="nx">jql</span> <span class="o">+=</span> <span class="nx">projects</span> <span class="k">if</span> <span class="nx">projects</span><span class="o">?</span>
 
         <span class="nx">@searchJira</span> <span class="nx">jql</span><span class="p">,</span> <span class="nx">details</span>
