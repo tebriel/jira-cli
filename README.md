@@ -1,3 +1,5 @@
+This project is abandoned. The NPM module is likely to be changed. The maintainer of https://github.com/danshumaker/jira-cmd approached me asking for the name within npm, and I've granted access. So there will be a whole new package in npm unrelated to this project.
+
 # jira-cli
 
 [![Build Status](https://travis-ci.org/tebriel/jira-cli.png?branch=master)](https://travis-ci.org/tebriel/jira-cli)
